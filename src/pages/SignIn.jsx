@@ -1,0 +1,113 @@
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import AuthShell from '../components/AuthShell'
+
+export default function SignIn() {
+  const [form, setForm] = useState({ email: '', password: '', remember: true })
+  const [error, setError] = useState('')
+  const [done, setDone] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [resetNotice, setResetNotice] = useState(false)
+
+  const update = (field) => (event) => {
+    const value = field === 'remember' ? event.target.checked : event.target.value
+    setForm((current) => ({ ...current, [field]: value }))
+    setError('')
+    setDone(false)
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+
+    if (!/^\S+@\S+\.\S+$/.test(form.email)) {
+      setError('Please enter a valid email address.')
+      return
+    }
+    if (form.password.length < 6) {
+      setError('Password must be at least 6 characters.')
+      return
+    }
+
+    setError('')
+    setDone(true)
+  }
+
+  return (
+    <AuthShell
+      title="Sign in"
+      subtitle="Welcome back. Log in to your NextGen account."
+      footer={
+        <>
+          Don’t have an account? <Link to="/signup">Create one</Link>
+        </>
+      }
+    >
+      <form className="auth-form" onSubmit={handleSubmit} noValidate>
+        <label className="field">
+          <span>Email address</span>
+          <input
+            type="email"
+            value={form.email}
+            onChange={update('email')}
+            placeholder="you@example.com"
+            autoComplete="email"
+          />
+        </label>
+
+        <label className="field">
+          <span>Password</span>
+          <span className="password-field">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              value={form.password}
+              onChange={update('password')}
+              placeholder="••••••••"
+              autoComplete="current-password"
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowPassword((visible) => !visible)}
+            >
+              {showPassword ? 'Hide' : 'Show'}
+            </button>
+          </span>
+        </label>
+
+        <div className="form-row">
+          <label className="checkbox-field">
+            <input
+              type="checkbox"
+              checked={form.remember}
+              onChange={update('remember')}
+            />
+            <span>Remember me</span>
+          </label>
+          <button
+            type="button"
+            className="text-button"
+            onClick={() => setResetNotice(true)}
+          >
+            Forgot password?
+          </button>
+        </div>
+
+        {error && <p className="form-error" role="alert">{error}</p>}
+        {done && (
+          <p className="form-success" role="status">
+            Demo sign-in successful — no account was contacted.
+          </p>
+        )}
+        {resetNotice && (
+          <p className="form-info" role="status">
+            Password reset isn’t connected in this front-end demo.
+          </p>
+        )}
+
+        <button type="submit" className="btn btn-primary btn-block">
+          Sign in <span className="arrow">→</span>
+        </button>
+      </form>
+    </AuthShell>
+  )
+}

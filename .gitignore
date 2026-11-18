@@ -1,0 +1,6 @@
+# Dependencies
+node_modules/
+
+# Build output (Render builds this fresh from source)
+dist/
+build/
