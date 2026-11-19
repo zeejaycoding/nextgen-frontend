@@ -9,14 +9,10 @@ import NotFound from './NotFound'
 export default function ProductDetail() {
   const { slug } = useParams()
   const product = products.find((item) => String(item.slug || item.id) === slug)
-  const [activeImage, setActiveImage] = useState(0)
   const [viewer, setViewer] = useState(null)
   const [checkout, setCheckout] = useState(false)
 
-  useEffect(() => {
-    setActiveImage(0)
-    setViewer(null)
-  }, [slug])
+  useEffect(() => setViewer(null), [slug])
 
   if (!product) return <NotFound />
 
@@ -24,6 +20,7 @@ export default function ProductDetail() {
   const embed = youtubeEmbed(product.video || 'https://www.youtube.com/watch?v=aqz-KE-bpKQ')
   const reference = String(product.id).padStart(3, '0')
   const paragraphs = product.description.split(/\n+/).filter(Boolean)
+  const screenshots = gallery.slice(1)
 
   const grouped = (product.features || []).map((feature) => {
     const [label, rest] = feature.split(': ')
@@ -34,163 +31,130 @@ export default function ProductDetail() {
   const plainFeatures = grouped.filter((group) => !group.label).flatMap((group) => group.items)
   const namedGroups = grouped.filter((group) => group.label)
 
-  const buy = () => setCheckout(true)
-
   return (
-    <div className="container page-content detail-page">
-      <nav className="breadcrumb" aria-label="Breadcrumb">
-        <Link to="/">Home</Link><span>/</span>
-        <Link to="/shop">Shop</Link><span>/</span>
-        <span>{product.title}</span>
-      </nav>
+    <div className="fmt-page-wrap">
+      <div className="container page-content fmt-page">
+        <nav className="breadcrumb" aria-label="Breadcrumb">
+          <Link to="/">Home</Link><span>/</span>
+          <Link to="/shop">Shop</Link><span>/</span>
+          <span>{product.title}</span>
+        </nav>
 
-      <header className="detail-heading">
-        <div>
-          <span className="detail-eyebrow">{product.game} · {product.category}</span>
-          <h1>{product.title}</h1>
-        </div>
-        <span className="detail-ref">Reference #{reference}</span>
-      </header>
+        <h1 className="fmt-title">{product.title}</h1>
 
-      <div className="detail-hero">
-        <div className="detail-gallery">
-          <div className="detail-main-image">
-            {product.badge && (
-              <span className={`product-badge${product.badge === 'Free' ? ' product-badge--free' : ''}`}>
-                {product.badge}
-              </span>
-            )}
-            <button
-              type="button"
-              className="detail-image-button"
-              onClick={() => setViewer(activeImage)}
-              aria-label="Open image full size"
-            >
-              <ProductImage product={product} src={gallery[activeImage]} />
-              <span className="media-open-hint">Click to enlarge ↗</span>
-            </button>
-          </div>
-
-          {gallery.length > 1 && (
-            <div className="detail-thumbs">
-              {gallery.map((image, index) => (
-                <button
-                  type="button"
-                  key={image + index}
-                  className={`detail-thumb${index === activeImage ? ' is-active' : ''}`}
-                  onClick={() => setActiveImage(index)}
-                  aria-label={`Show screenshot ${index + 1}`}
-                >
-                  <ProductImage product={product} src={image} />
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-
-        <aside className="detail-sidebar">
-          <div className="info-panel">
-            <h2>Application information</h2>
-            <dl className="info-table">
-              <div><dt>#ID</dt><dd>#{reference}</dd></div>
-              <div><dt>Created by</dt><dd>{product.contact}</dd></div>
-              <div><dt>Price</dt><dd className="price-accent">{formatPrice(product.price)}</dd></div>
-              <div><dt>Version</dt><dd>{product.version || '1.0'}</dd></div>
-              <div><dt>Published at</dt><dd>{formatDate(product.published)}</dd></div>
-            </dl>
-          </div>
-
-          <div className="sidebar-buy">
-            <span className="detail-availability">Available now</span>
-            <strong>{formatPrice(product.price)}</strong>
-            <button type="button" className="btn btn-primary btn-lg" onClick={buy}>
-              Buy Application <span className="arrow">→</span>
-            </button>
-            <span className="sidebar-note">Sandbox checkout — no real payment is taken.</span>
-          </div>
-        </aside>
-      </div>
-
-      <section className="detail-section">
-        <div className="detail-section-head"><h2>Description</h2></div>
-        <div className="detail-copy">
-          {paragraphs.map((line, index) => <p key={index}>{line}</p>)}
-        </div>
-
-        {(plainFeatures.length > 0 || namedGroups.length > 0) && (
-          <div className="detail-features">
-            <h3>A few features that are available</h3>
-            {plainFeatures.length > 0 && (
-              <ul className="feature-list">
-                {plainFeatures.map((feature) => <li key={feature}>{feature}</li>)}
-              </ul>
-            )}
-            {namedGroups.map((group) => (
-              <div className="feature-group" key={group.label}>
-                <h4>{group.label}</h4>
-                <ul className="feature-list">
-                  {group.items.map((item) => <li key={item}>{item}</li>)}
-                </ul>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
-
-      {gallery.length > 1 && (
-        <section className="detail-section">
-          <div className="detail-section-head"><h2>Screenshots</h2></div>
-          <div className="shot-grid">
-            {gallery.map((image, index) => (
+        <div className="fmt-panel">
+          <div className="fmt-panel-inner">
+            <div className="fmt-picture">
               <button
                 type="button"
-                key={image + index}
-                onClick={() => { setActiveImage(index); setViewer(index) }}
-                aria-label={`Open screenshot ${index + 1} full size`}
+                className="fmt-image-button"
+                onClick={() => setViewer(0)}
+                aria-label="Open image full size"
               >
-                <ProductImage product={product} src={image} />
+                <ProductImage product={product} src={gallery[0]} />
               </button>
-            ))}
-          </div>
-        </section>
-      )}
+            </div>
 
-      {embed && (
-        <section className="detail-section">
-          <div className="detail-section-head"><h2>Video</h2></div>
-          <div className="video-frame">
-            <iframe
-              src={embed}
-              title={`${product.title} video`}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-        </section>
-      )}
+            <h2 className="fmt-section-title">Application Informations</h2>
+            <table className="fmt-table">
+              <thead>
+                <tr>
+                  <th>#ID</th>
+                  <th>Created by</th>
+                  <th>Price</th>
+                  <th>Version</th>
+                  <th>Published at</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>#{reference}</td>
+                  <td>{product.contact}</td>
+                  <td className="fmt-price">{formatPrice(product.price)}</td>
+                  <td>{product.version || '1.0'}</td>
+                  <td>{formatDate(product.published)}</td>
+                </tr>
+              </tbody>
+            </table>
 
-      <div className="buy-callout">
-        <div>
-          <span>Ready to get started?</span>
-          <strong>{product.title} — {formatPrice(product.price)}</strong>
+            <h2 className="fmt-section-title">Description of Application</h2>
+            <div className="fmt-description">
+              {paragraphs.map((line, index) => <p key={index}>{line}</p>)}
+
+              {(plainFeatures.length > 0 || namedGroups.length > 0) && (
+                <>
+                  <p>A few features that are available:</p>
+                  {plainFeatures.length > 0 && (
+                    <ul>
+                      {plainFeatures.map((feature) => <li key={feature}>{feature}</li>)}
+                    </ul>
+                  )}
+                  {namedGroups.map((group) => (
+                    <div className="fmt-feature-group" key={group.label}>
+                      <p className="fmt-group-title">{group.label}</p>
+                      <ul>
+                        {group.items.map((item) => <li key={item}>{item}</li>)}
+                      </ul>
+                    </div>
+                  ))}
+                </>
+              )}
+
+              <p className="fmt-note">A console with <strong>CCAPI</strong> installed is required</p>
+              <p>Video :</p>
+
+              <div className="fmt-shots">
+                {screenshots.map((image, index) => (
+                  <button
+                    type="button"
+                    key={image + index}
+                    className="fmt-shot"
+                    onClick={() => setViewer(index + 1)}
+                    aria-label={`Open screenshot ${index + 1} full size`}
+                  >
+                    <ProductImage product={product} src={image} />
+                  </button>
+                ))}
+              </div>
+
+              {embed && (
+                <div className="fmt-video">
+                  <iframe
+                    src={embed}
+                    title={`${product.title} video`}
+                    width="560"
+                    height="315"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              )}
+            </div>
+
+            <h2 className="fmt-section-title">Buy Application</h2>
+            <div className="fmt-buy">
+              <strong>{formatPrice(product.price)}</strong>
+              <button type="button" className="btn btn-primary btn-lg" onClick={() => setCheckout(true)}>
+                Buy Application <span className="arrow">→</span>
+              </button>
+              <span>Sandbox checkout — no real payment is taken.</span>
+            </div>
+          </div>
         </div>
-        <button type="button" className="btn btn-primary btn-lg" onClick={buy}>
-          Buy Application <span className="arrow">→</span>
-        </button>
+
+        {viewer !== null && (
+          <Lightbox
+            images={gallery}
+            index={viewer}
+            onIndexChange={setViewer}
+            onClose={() => setViewer(null)}
+            product={product}
+            title={product.title}
+          />
+        )}
+
+        {checkout && <CheckoutModal product={product} onClose={() => setCheckout(false)} />}
       </div>
-
-      {viewer !== null && (
-        <Lightbox
-          images={gallery}
-          index={viewer}
-          onIndexChange={setViewer}
-          onClose={() => setViewer(null)}
-          product={product}
-          title={product.title}
-        />
-      )}
-
-      {checkout && <CheckoutModal product={product} onClose={() => setCheckout(false)} />}
     </div>
   )
 }

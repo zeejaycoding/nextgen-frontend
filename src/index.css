@@ -2553,3 +2553,189 @@ summary:focus-visible {
   .buy-callout { flex-direction: column; align-items: stretch; text-align: center; padding: 22px; }
   .buy-callout .btn { width: 100%; }
 }
+
+/* ---------- Application detail (reference-style layout) ---------- */
+
+.fmt-page-wrap {
+  background: #f0f0f0;
+}
+
+.fmt-page {
+  max-width: 1000px;
+  color: #707070;
+}
+
+.fmt-page .breadcrumb {
+  margin-bottom: 20px;
+}
+
+.fmt-page .fmt-title {
+  margin: 20px 0;
+  color: #06a7ea;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.fmt-panel {
+  margin: 0 20px 30px;
+  padding: 10px;
+  background: #f8f8f8;
+}
+
+.fmt-panel-inner {
+  max-width: 940px;
+  margin: 0 auto;
+}
+
+.fmt-picture {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.fmt-image-button {
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+
+.fmt-image-button img {
+  width: auto;
+  max-width: 900px;
+  max-height: 500px;
+}
+
+.fmt-section-title {
+  margin: 40px 0 20px;
+  color: #707070;
+  font-size: 20px;
+  font-weight: 400;
+  text-align: center;
+}
+
+.fmt-table {
+  width: 100%;
+  margin-bottom: 20px;
+  border-collapse: collapse;
+  color: #707070;
+  font-size: 14px;
+}
+
+.fmt-table th,
+.fmt-table td {
+  padding: 8px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.fmt-table thead th {
+  border-bottom: 2px solid #ddd;
+  font-weight: 700;
+}
+
+.fmt-table tbody td {
+  border-top: 1px solid #ddd;
+}
+
+.fmt-table .fmt-price {
+  color: #06a7ea;
+  font-weight: 700;
+}
+
+.fmt-description {
+  color: #707070;
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: left;
+}
+
+.fmt-description p {
+  margin: 0 0 10px;
+}
+
+.fmt-description ul {
+  margin: 0 0 10px 35px;
+  padding: 0;
+  list-style: disc;
+}
+
+.fmt-description li {
+  margin-bottom: 5px;
+}
+
+.fmt-feature-group {
+  margin-bottom: 10px;
+}
+
+.fmt-group-title {
+  text-decoration: underline;
+}
+
+.fmt-note strong {
+  color: #ff0000;
+}
+
+.fmt-shots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.fmt-shot {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+
+.fmt-shot img {
+  width: 500px;
+  max-width: 100%;
+  height: auto;
+}
+
+.fmt-video {
+  display: flex;
+  justify-content: center;
+  margin: 12px 0;
+}
+
+.fmt-video iframe {
+  width: 560px;
+  max-width: 100%;
+  height: 315px;
+  border: 0;
+}
+
+.fmt-buy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.fmt-buy strong {
+  color: #06a7ea;
+  font-size: 20px;
+}
+
+.fmt-buy span {
+  color: #8a8a8a;
+  font-size: 11px;
+}
+
+@media (max-width: 640px) {
+  .fmt-page { padding-top: 24px; padding-bottom: 40px; }
+  .fmt-page .fmt-title { font-size: 24px; }
+  .fmt-panel { margin: 0 0 24px; padding: 8px; }
+  .fmt-section-title { font-size: 17px; margin: 28px 0 16px; }
+  .fmt-table th, .fmt-table td { padding: 6px 4px; font-size: 11px; }
+  .fmt-shot img { width: 100%; }
+  .fmt-image-button img { max-height: 320px; }
+}
