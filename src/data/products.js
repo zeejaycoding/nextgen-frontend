@@ -1,5 +1,5 @@
 // Product catalogue (front-end demo data, mirrored from the reference site).
-// Screenshots are stored locally in public/images. ProductCard also renders a
+// Screenshots are stored locally in public/images. ProductImage also renders a
 // branded fallback if an image is ever missing.
 
 export const products = [
@@ -11,12 +11,15 @@ export const products = [
     category: 'Mod',
     price: 19.99,
     image: '/images/revolution0.png',
+    images: ['/images/revolution0.png'],
     contact: 'NextGen Team',
     published: '2016-02-01',
     badge: 'Bestseller',
     featured: true,
+    version: '2.4',
     description:
       'A full revolution for Black Ops II: new maps, new weapons and a completely reworked experience.',
+    features: ['New maps and weapon sets', 'Reworked menus and HUD', 'Quality-of-life fixes'],
   },
   {
     id: 33,
@@ -26,12 +29,20 @@ export const products = [
     category: 'Mod',
     price: 19.99,
     image: '/images/phantom0.png',
+    images: ['/images/phantom0.png'],
     contact: 'NextGen Team',
     published: '2016-03-30',
     badge: 'Bestseller',
     featured: true,
+    version: '2.22',
+    video: 'https://www.youtube.com/watch?v=aqz-KE-bpKQ',
     description:
-      'Step into the shadows with Phantom. Stealth-focused gameplay, new menus and exclusive content.',
+      'Step into the shadows with Phantom. Stealth-focused gameplay, new menus and exclusive content for Modern Warfare 3.',
+    features: [
+      'Host menu: aimbot, givable menu, advanced noclip, forge mode and menu scripting',
+      'Non-host menu: radar, no recoil, ESP, autoshoot, autowall and name changing',
+      'Pregame menu: name modification, console commands and theme selector',
+    ],
   },
   {
     id: 18,
@@ -41,12 +52,15 @@ export const products = [
     category: 'Mod',
     price: 14.99,
     image: '/images/memories0.png',
+    images: ['/images/memories0.png'],
     contact: 'NextGen Team',
     published: '2016-01-01',
     badge: 'Bestseller',
     featured: true,
+    version: '1.8',
     description:
       'A nostalgic rebuild of the classic MW3 experience, packed with community favourites.',
+    features: ['Classic map line-up', 'Community favourite settings', 'Clean modern interface'],
   },
   {
     id: 39,
@@ -56,10 +70,12 @@ export const products = [
     category: 'Mod',
     price: 19.99,
     image: '/images/fatality0.png',
+    images: ['/images/fatality0.png'],
     contact: 'NextGen Team',
     published: '2017-09-18',
     badge: 'New',
     latest: true,
+    version: '1.2',
     description:
       'Our latest Black Ops III release: refined menus, custom gametypes and a brutal new look.',
   },
@@ -71,11 +87,12 @@ export const products = [
     category: 'Mod',
     price: 19.99,
     image: '/images/destiny0.png',
+    images: ['/images/destiny0.png'],
     contact: 'NextGen Team',
     published: '2017-03-12',
     latest: true,
-    description:
-      'A sci-fi themed transformation for BO2 with exotic weapons and futuristic maps.',
+    version: '1.5',
+    description: 'A sci-fi themed transformation for BO2 with exotic weapons and futuristic maps.',
   },
   {
     id: 35,
@@ -85,11 +102,12 @@ export const products = [
     category: 'Mod',
     price: 19.99,
     image: '/images/fury0.png',
+    images: ['/images/fury0.png'],
     contact: 'NextGen Team',
     published: '2016-07-04',
     latest: true,
-    description:
-      'Unleash fury in Advanced Warfare with boosted movement and a fully custom HUD.',
+    version: '3.1',
+    description: 'Unleash fury in Advanced Warfare with boosted movement and a fully custom HUD.',
   },
   {
     id: 34,
@@ -99,10 +117,11 @@ export const products = [
     category: 'Mod',
     price: 19.99,
     image: '/images/eternity0.png',
+    images: ['/images/eternity0.png'],
     contact: 'NextGen Team',
     published: '2016-03-30',
-    description:
-      'The ultimate Ghosts mod: extended maps, new modes and a clean, modern interface.',
+    version: '1.0',
+    description: 'The ultimate Ghosts mod: extended maps, new modes and a clean, modern interface.',
   },
   {
     id: 30,
@@ -112,10 +131,11 @@ export const products = [
     category: 'Mod',
     price: 19.99,
     image: '/images/fusion0.png',
+    images: ['/images/fusion0.png'],
     contact: 'NextGen Team',
     published: '2016-03-01',
-    description:
-      'Classic Black Ops fused with modern features. A fan-favourite community release.',
+    version: '2.0',
+    description: 'Classic Black Ops fused with modern features. A fan-favourite community release.',
   },
   {
     id: 20,
@@ -125,11 +145,12 @@ export const products = [
     category: 'Tool',
     price: 0,
     image: '/images/ccapi0.png',
+    images: ['/images/ccapi0.png'],
     contact: 'NextGen Team',
     published: '2013-11-11',
     badge: 'Free',
-    description:
-      'A free control console API for RTE CEX + DEX. Built for developers and modders.',
+    version: '2.80r14',
+    description: 'A free control console API for RTE CEX + DEX. Built for developers and modders.',
   },
   {
     id: 19,
@@ -139,8 +160,10 @@ export const products = [
     category: 'Mod',
     price: 14.99,
     image: '/images/reborn0.png',
+    images: ['/images/reborn0.png'],
     contact: 'NextGen Team',
     published: '2016-01-01',
+    version: '1.3',
     description:
       'Modern Warfare 2 is reborn with restored maps, scrapped content and quality-of-life fixes.',
   },
@@ -150,13 +173,31 @@ export const mostSold = products.filter((p) => p.featured)
 export const latestApps = products.filter((p) => p.latest)
 
 export function formatPrice(price) {
-  return price === 0 ? 'FREE' : `€${price.toFixed(2)}`
+  return price === 0 ? 'FREE' : `€${Number(price).toFixed(2)}`
 }
 
 export function formatDate(value) {
+  if (!value) return '—'
   const [year, month, day] = value.split('-')
   const monthName = new Date(year, month - 1, day).toLocaleString('en', {
     month: 'short',
   })
   return `${monthName} ${day}, ${year}`
+}
+
+/** Three gaming screenshots for any product: its own cover plus two others. */
+export function galleryFor(product) {
+  const pool = products.map((item) => item.image).filter((src) => src && src !== product.image)
+  const start = product.id % pool.length
+  return [product.image, pool[start % pool.length], pool[(start + 1) % pool.length]].filter(Boolean)
+}
+
+export function youtubeEmbed(value) {
+  if (!value) return null
+  const input = String(value).trim()
+  const watch = input.match(/[?&]v=([^&#]+)/)
+  const short = input.match(/youtu\.be\/([^?&#]+)/)
+  const embed = input.match(/\/embed\/([^?&#]+)/)
+  const id = watch?.[1] || short?.[1] || embed?.[1] || (/^[a-zA-Z0-9_-]{11}$/.test(input) ? input : '')
+  return id ? `https://www.youtube-nocookie.com/embed/${id}` : null
 }
