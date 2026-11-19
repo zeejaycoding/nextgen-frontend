@@ -16,11 +16,8 @@ export default function Footer() {
       <div className="footer-top">
         <div className="container footer-grid">
           <div className="footer-col footer-about">
-            <h2 className="footer-title">NextGen</h2>
-            <p>
-              Game mods, tools and tutorials for players who want more from the games they love.
-            </p>
-            <div className="footer-tag">Modding <span>/</span> Tools <span>/</span> Tutorials</div>
+            <h2 className="footer-title">NextGen Update</h2>
+            <p>Built for gamers who want more from the games they love.</p>
           </div>
 
           <div className="footer-col">
@@ -48,7 +45,7 @@ export default function Footer() {
         <div className="container footer-bottom-inner">
           <div className="footer-brand">
             <Logo size={34} withText={false} />
-            <span>© {new Date().getFullYear()} NextGen. All rights reserved.</span>
+            <span>© {new Date().getFullYear()} NextGen Update. All rights reserved.</span>
           </div>
           <ul className="social-links">
             {socials.map((social) => (

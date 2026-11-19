@@ -35,7 +35,7 @@ export default function SignIn() {
   return (
     <AuthShell
       title="Sign in"
-      subtitle="Welcome back. Log in to your NextGen account."
+      subtitle="Welcome back. Log in to your NextGen Update account."
       footer={
         <>
           Don’t have an account? <Link to="/signup">Create one</Link>

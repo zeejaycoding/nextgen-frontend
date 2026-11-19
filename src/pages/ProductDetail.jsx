@@ -22,7 +22,17 @@ export default function ProductDetail() {
 
   const gallery = galleryFor(product)
   const embed = youtubeEmbed(product.video || 'https://www.youtube.com/watch?v=aqz-KE-bpKQ')
-  const features = product.features || []
+  const reference = String(product.id).padStart(3, '0')
+  const paragraphs = product.description.split(/\n+/).filter(Boolean)
+
+  const grouped = (product.features || []).map((feature) => {
+    const [label, rest] = feature.split(': ')
+    return rest
+      ? { label, items: rest.split(',').map((item) => item.trim()).filter(Boolean) }
+      : { label: '', items: [feature] }
+  })
+  const plainFeatures = grouped.filter((group) => !group.label).flatMap((group) => group.items)
+  const namedGroups = grouped.filter((group) => group.label)
 
   const buy = () => setCheckout(true)
 
@@ -33,6 +43,14 @@ export default function ProductDetail() {
         <Link to="/shop">Shop</Link><span>/</span>
         <span>{product.title}</span>
       </nav>
+
+      <header className="detail-heading">
+        <div>
+          <span className="detail-eyebrow">{product.game} · {product.category}</span>
+          <h1>{product.title}</h1>
+        </div>
+        <span className="detail-ref">Reference #{reference}</span>
+      </header>
 
       <div className="detail-hero">
         <div className="detail-gallery">
@@ -70,56 +88,54 @@ export default function ProductDetail() {
           )}
         </div>
 
-        <div className="detail-info">
-          <span className="detail-eyebrow">{product.game} · {product.category}</span>
-          <h1>{product.title}</h1>
-          <p className="detail-lead">{product.description}</p>
+        <aside className="detail-sidebar">
+          <div className="info-panel">
+            <h2>Application information</h2>
+            <dl className="info-table">
+              <div><dt>#ID</dt><dd>#{reference}</dd></div>
+              <div><dt>Created by</dt><dd>{product.contact}</dd></div>
+              <div><dt>Price</dt><dd className="price-accent">{formatPrice(product.price)}</dd></div>
+              <div><dt>Version</dt><dd>{product.version || '1.0'}</dd></div>
+              <div><dt>Published at</dt><dd>{formatDate(product.published)}</dd></div>
+            </dl>
+          </div>
 
-          <div className="detail-price-row">
-            <span className="detail-price">{formatPrice(product.price)}</span>
+          <div className="sidebar-buy">
             <span className="detail-availability">Available now</span>
-          </div>
-
-          <div className="detail-actions">
+            <strong>{formatPrice(product.price)}</strong>
             <button type="button" className="btn btn-primary btn-lg" onClick={buy}>
-              Buy now <span className="arrow">→</span>
+              Buy Application <span className="arrow">→</span>
             </button>
+            <span className="sidebar-note">Sandbox checkout — no real payment is taken.</span>
           </div>
-
-          <dl className="detail-meta">
-            <div><dt>Reference</dt><dd>#{String(product.id).padStart(3, '0')}</dd></div>
-            <div><dt>Created by</dt><dd>{product.contact}</dd></div>
-            <div><dt>Version</dt><dd>{product.version || '1.0'}</dd></div>
-            <div><dt>Published</dt><dd>{formatDate(product.published)}</dd></div>
-          </dl>
-        </div>
+        </aside>
       </div>
 
       <section className="detail-section">
-        <div className="detail-section-head">
-          <h2>About this {product.category.toLowerCase()}</h2>
+        <div className="detail-section-head"><h2>Description</h2></div>
+        <div className="detail-copy">
+          {paragraphs.map((line, index) => <p key={index}>{line}</p>)}
         </div>
-        <p className="detail-copy">{product.description}</p>
-        {features.length > 0 && (
-          <ul className="feature-list">
-            {features.map((feature) => <li key={feature}>{feature}</li>)}
-          </ul>
+
+        {(plainFeatures.length > 0 || namedGroups.length > 0) && (
+          <div className="detail-features">
+            <h3>A few features that are available</h3>
+            {plainFeatures.length > 0 && (
+              <ul className="feature-list">
+                {plainFeatures.map((feature) => <li key={feature}>{feature}</li>)}
+              </ul>
+            )}
+            {namedGroups.map((group) => (
+              <div className="feature-group" key={group.label}>
+                <h4>{group.label}</h4>
+                <ul className="feature-list">
+                  {group.items.map((item) => <li key={item}>{item}</li>)}
+                </ul>
+              </div>
+            ))}
+          </div>
         )}
       </section>
-
-      {embed && (
-        <section className="detail-section">
-          <div className="detail-section-head"><h2>Video</h2></div>
-          <div className="video-frame">
-            <iframe
-              src={embed}
-              title={`${product.title} video`}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-        </section>
-      )}
 
       {gallery.length > 1 && (
         <section className="detail-section">
@@ -139,13 +155,27 @@ export default function ProductDetail() {
         </section>
       )}
 
-      <div className="detail-buy-bar">
+      {embed && (
+        <section className="detail-section">
+          <div className="detail-section-head"><h2>Video</h2></div>
+          <div className="video-frame">
+            <iframe
+              src={embed}
+              title={`${product.title} video`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+        </section>
+      )}
+
+      <div className="buy-callout">
         <div>
           <span>Ready to get started?</span>
           <strong>{product.title} — {formatPrice(product.price)}</strong>
         </div>
         <button type="button" className="btn btn-primary btn-lg" onClick={buy}>
-          Buy now <span className="arrow">→</span>
+          Buy Application <span className="arrow">→</span>
         </button>
       </div>
 

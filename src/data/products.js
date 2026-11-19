@@ -12,7 +12,7 @@ export const products = [
     price: 19.99,
     image: '/images/revolution0.png',
     images: ['/images/revolution0.png'],
-    contact: 'NextGen Team',
+    contact: 'NextGen Update Team',
     published: '2016-02-01',
     badge: 'Bestseller',
     featured: true,
@@ -30,7 +30,7 @@ export const products = [
     price: 19.99,
     image: '/images/phantom0.png',
     images: ['/images/phantom0.png'],
-    contact: 'NextGen Team',
+    contact: 'NextGen Update Team',
     published: '2016-03-30',
     badge: 'Bestseller',
     featured: true,
@@ -53,7 +53,7 @@ export const products = [
     price: 14.99,
     image: '/images/memories0.png',
     images: ['/images/memories0.png'],
-    contact: 'NextGen Team',
+    contact: 'NextGen Update Team',
     published: '2016-01-01',
     badge: 'Bestseller',
     featured: true,
@@ -71,7 +71,7 @@ export const products = [
     price: 19.99,
     image: '/images/fatality0.png',
     images: ['/images/fatality0.png'],
-    contact: 'NextGen Team',
+    contact: 'NextGen Update Team',
     published: '2017-09-18',
     badge: 'New',
     latest: true,
@@ -88,7 +88,7 @@ export const products = [
     price: 19.99,
     image: '/images/destiny0.png',
     images: ['/images/destiny0.png'],
-    contact: 'NextGen Team',
+    contact: 'NextGen Update Team',
     published: '2017-03-12',
     latest: true,
     version: '1.5',
@@ -103,7 +103,7 @@ export const products = [
     price: 19.99,
     image: '/images/fury0.png',
     images: ['/images/fury0.png'],
-    contact: 'NextGen Team',
+    contact: 'NextGen Update Team',
     published: '2016-07-04',
     latest: true,
     version: '3.1',
@@ -118,7 +118,7 @@ export const products = [
     price: 19.99,
     image: '/images/eternity0.png',
     images: ['/images/eternity0.png'],
-    contact: 'NextGen Team',
+    contact: 'NextGen Update Team',
     published: '2016-03-30',
     version: '1.0',
     description: 'The ultimate Ghosts mod: extended maps, new modes and a clean, modern interface.',
@@ -132,7 +132,7 @@ export const products = [
     price: 19.99,
     image: '/images/fusion0.png',
     images: ['/images/fusion0.png'],
-    contact: 'NextGen Team',
+    contact: 'NextGen Update Team',
     published: '2016-03-01',
     version: '2.0',
     description: 'Classic Black Ops fused with modern features. A fan-favourite community release.',
@@ -146,7 +146,7 @@ export const products = [
     price: 0,
     image: '/images/ccapi0.png',
     images: ['/images/ccapi0.png'],
-    contact: 'NextGen Team',
+    contact: 'NextGen Update Team',
     published: '2013-11-11',
     badge: 'Free',
     version: '2.80r14',
@@ -161,7 +161,7 @@ export const products = [
     price: 14.99,
     image: '/images/reborn0.png',
     images: ['/images/reborn0.png'],
-    contact: 'NextGen Team',
+    contact: 'NextGen Update Team',
     published: '2016-01-01',
     version: '1.3',
     description:
@@ -173,7 +173,7 @@ export const mostSold = products.filter((p) => p.featured)
 export const latestApps = products.filter((p) => p.latest)
 
 export function formatPrice(price) {
-  return price === 0 ? 'FREE' : `€${Number(price).toFixed(2)}`
+  return price === 0 ? 'FREE' : `$${Number(price).toFixed(2)}`
 }
 
 export function formatDate(value) {

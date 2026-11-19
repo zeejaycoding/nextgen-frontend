@@ -1,6 +1,6 @@
 import { useId } from 'react'
 
-/** NextGen — angular NG badge with a neon cyan edge. */
+/** NextGen Update — angular NG badge with a neon cyan edge. */
 export default function Logo({ size = 46, withText = true, light = false }) {
   const uid = useId().replace(/:/g, '')
   const neon = `ng-neon-${uid}`
@@ -15,7 +15,7 @@ export default function Logo({ size = 46, withText = true, light = false }) {
         height={size}
         viewBox="0 0 64 64"
         role="img"
-        aria-label="NextGen logo"
+        aria-label="NextGen Update logo"
       >
         <defs>
           <linearGradient id={neon} x1="0" y1="1" x2="1" y2="0">
@@ -62,9 +62,8 @@ export default function Logo({ size = 46, withText = true, light = false }) {
       {withText && (
         <span className={`logo-word${light ? ' logo-word--light' : ''}`}>
           <span className="logo-word-main">
-            NEXT<span className="accent">GEN</span>
+            NEXT<span className="accent">GEN</span> UPDATE
           </span>
-          <span className="logo-word-sub">Modding · Tools · Tutorials</span>
         </span>
       )}
     </span>

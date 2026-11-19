@@ -10,10 +10,13 @@ function CardIcon() {
   )
 }
 
-function PayPalIcon() {
+function ApplePayIcon() {
   return (
-    <span className="paypal-mark" aria-hidden="true">
-      <span>Pay</span>Pal
+    <span className="applepay-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24">
+        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.9 9.39c.98-1.52 2.5-2.41 3.94-2.41 1.47 0 2.39.79 3.6.79 1.18 0 1.9-.79 3.59-.79 1.28 0 2.64.7 3.61 1.91-3.17 1.74-2.65 5.61.07 6.61Zm-1.99-9.63c.68-.82 1.14-1.96 1.01-3.1-.98.04-2.16.65-2.86 1.48-.63.73-1.18 1.9-1.03 3.01 1.09.08 2.2-.55 2.88-1.39Z" />
+      </svg>
+      <span>Apple Pay</span>
     </span>
   )
 }
@@ -73,10 +76,10 @@ function Checkout({ product, onBack, onDone }) {
           </button>
           <button
             type="button"
-            className={`payment-option${method === 'paypal' ? ' is-active' : ''}`}
-            onClick={() => { setMethod('paypal'); setError('') }}
+            className={`payment-option${method === 'applepay' ? ' is-active' : ''}`}
+            onClick={() => { setMethod('applepay'); setError('') }}
           >
-            <PayPalIcon />
+            <ApplePayIcon />
           </button>
         </div>
 
@@ -138,11 +141,11 @@ function Checkout({ product, onBack, onDone }) {
             </button>
           </form>
         ) : (
-          <div className="paypal-panel">
-            <PayPalIcon />
-            <p>You’ll be sent to PayPal to approve this payment.</p>
-            <button type="button" className="btn btn-paypal checkout-submit" onClick={onDone}>
-              Continue with PayPal
+          <div className="applepay-panel">
+            <ApplePayIcon />
+            <p>Confirm this payment with Apple Pay on your device.</p>
+            <button type="button" className="btn btn-applepay checkout-submit" onClick={onDone}>
+              Continue with Apple Pay
             </button>
           </div>
         )}

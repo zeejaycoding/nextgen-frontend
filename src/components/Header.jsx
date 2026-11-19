@@ -13,7 +13,7 @@ export default function Header() {
     <header className="site-header">
       <div className="top-header">
         <div className="container top-header-inner">
-          <Link to="/" className="brand-link" aria-label="NextGen home">
+          <Link to="/" className="brand-link" aria-label="NextGen Update home">
             <Logo />
           </Link>
 

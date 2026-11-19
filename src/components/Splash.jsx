@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Logo from './Logo'
 
 /** Short branded intro shown once per page load / refresh. */
-export default function Splash({ caption = 'Loading NextGen…' }) {
+export default function Splash({ caption = 'Loading NextGen Update…' }) {
   const [phase, setPhase] = useState('visible')
 
   useEffect(() => {
