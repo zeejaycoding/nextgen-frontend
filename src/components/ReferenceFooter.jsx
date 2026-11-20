@@ -62,19 +62,13 @@ export default function ReferenceFooter() {
           <div className="fmt-share">
             <ul className="fmt-footer-nav fmt-share-nav">
               <li>
-                <a href="https://www.facebook.com/FrenchModdingTeam" target="_blank" rel="noreferrer" aria-label="Facebook">
-                  <i className="fmt-social-icon" aria-hidden="true">f</i>
-                </a>
+                <span className="fmt-social-icon" role="img" aria-label="Facebook" title="Facebook">f</span>
               </li>
               <li>
-                <a href="https://www.twitter.com/FMTOfficiel" target="_blank" rel="noreferrer" aria-label="Twitter">
-                  <i className="fmt-social-icon" aria-hidden="true">t</i>
-                </a>
+                <span className="fmt-social-icon" role="img" aria-label="Twitter" title="Twitter">t</span>
               </li>
               <li>
-                <a href="https://www.youtube.com/user/FrenchModdingTeam" target="_blank" rel="noreferrer" aria-label="YouTube">
-                  <i className="fmt-social-icon" aria-hidden="true">▶</i>
-                </a>
+                <span className="fmt-social-icon" role="img" aria-label="YouTube" title="YouTube">▶</span>
               </li>
             </ul>
           </div>

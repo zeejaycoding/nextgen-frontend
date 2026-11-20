@@ -252,29 +252,6 @@
   text-decoration: none;
 }
 
-.fmt-clone .fmt-lang {
-  position: relative;
-  float: right;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 66px;
-  height: 34px;
-  margin: 13px 0 11px;
-  background: #fff;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-  font-size: 14px;
-}
-
-.fmt-clone .fmt-lang i {
-  width: 0;
-  height: 0;
-  margin: 4px 0 0 7px;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid #313131;
-}
-
 /* ---------- Breadcrumb strip ---------- */
 
 .fmt-clone .fmt-breadcrumb-section {
@@ -799,7 +776,6 @@
   .fmt-clone .fmt-header-inner { height: auto; margin-top: 0; padding: 72px 32px 2px 52px; }
   .fmt-clone .fmt-signup-btn { display: none; }
   .fmt-clone .fmt-nav-links { float: none; flex-wrap: wrap; }
-  .fmt-clone .fmt-lang { display: none; }
   .fmt-clone .fmt-breadcrumb-section { width: auto; margin: 0 25px 40px 5px; }
   .fmt-clone .fmt-breadcrumb { padding: 8px 0; }
   .fmt-clone .fmt-page-header { font-size: 24px; line-height: 40px; }

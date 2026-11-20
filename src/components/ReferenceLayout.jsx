@@ -57,10 +57,6 @@ export default function ReferenceLayout({ children }) {
               <a href={DISCORD_INVITE} target="_blank" rel="noreferrer">Discord</a>
             </li>
           </ul>
-          <div className="fmt-lang" aria-label="Language: English">
-            <span>eng</span>
-            <i aria-hidden="true" />
-          </div>
         </div>
       </nav>
 
