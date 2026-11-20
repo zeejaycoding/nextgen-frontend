@@ -12,7 +12,7 @@ export const products = [
     price: 19.99,
     image: '/images/revolution0.png',
     images: ['/images/revolution0.png'],
-    contact: 'NextGen Update Team',
+    contact: 'DOMIGEN Team',
     published: '2016-02-01',
     badge: 'Bestseller',
     featured: true,
@@ -30,7 +30,7 @@ export const products = [
     price: 19.99,
     image: '/images/phantom0.png',
     images: ['/images/phantom0.png'],
-    contact: 'NextGen Update Team',
+    contact: 'DOMIGEN Team',
     published: '2016-03-30',
     badge: 'Bestseller',
     featured: true,
@@ -53,7 +53,7 @@ export const products = [
     price: 14.99,
     image: '/images/memories0.png',
     images: ['/images/memories0.png'],
-    contact: 'NextGen Update Team',
+    contact: 'DOMIGEN Team',
     published: '2016-01-01',
     badge: 'Bestseller',
     featured: true,
@@ -71,7 +71,7 @@ export const products = [
     price: 19.99,
     image: '/images/fatality0.png',
     images: ['/images/fatality0.png'],
-    contact: 'NextGen Update Team',
+    contact: 'DOMIGEN Team',
     published: '2017-09-18',
     badge: 'New',
     latest: true,
@@ -88,7 +88,7 @@ export const products = [
     price: 19.99,
     image: '/images/destiny0.png',
     images: ['/images/destiny0.png'],
-    contact: 'NextGen Update Team',
+    contact: 'DOMIGEN Team',
     published: '2017-03-12',
     latest: true,
     version: '1.5',
@@ -103,7 +103,7 @@ export const products = [
     price: 19.99,
     image: '/images/fury0.png',
     images: ['/images/fury0.png'],
-    contact: 'NextGen Update Team',
+    contact: 'DOMIGEN Team',
     published: '2016-07-04',
     latest: true,
     version: '3.1',
@@ -118,7 +118,7 @@ export const products = [
     price: 19.99,
     image: '/images/eternity0.png',
     images: ['/images/eternity0.png'],
-    contact: 'NextGen Update Team',
+    contact: 'DOMIGEN Team',
     published: '2016-03-30',
     version: '1.0',
     description: 'The ultimate Ghosts mod: extended maps, new modes and a clean, modern interface.',
@@ -132,7 +132,7 @@ export const products = [
     price: 19.99,
     image: '/images/fusion0.png',
     images: ['/images/fusion0.png'],
-    contact: 'NextGen Update Team',
+    contact: 'DOMIGEN Team',
     published: '2016-03-01',
     version: '2.0',
     description: 'Classic Black Ops fused with modern features. A fan-favourite community release.',
@@ -146,7 +146,7 @@ export const products = [
     price: 0,
     image: '/images/ccapi0.png',
     images: ['/images/ccapi0.png'],
-    contact: 'NextGen Update Team',
+    contact: 'DOMIGEN Team',
     published: '2013-11-11',
     badge: 'Free',
     version: '2.80r14',
@@ -161,7 +161,7 @@ export const products = [
     price: 14.99,
     image: '/images/reborn0.png',
     images: ['/images/reborn0.png'],
-    contact: 'NextGen Update Team',
+    contact: 'DOMIGEN Team',
     published: '2016-01-01',
     version: '1.3',
     description:
@@ -185,11 +185,17 @@ export function formatDate(value) {
   return `${monthName} ${day}, ${year}`
 }
 
-/** Three gaming screenshots for any product: its own cover plus two others. */
+/** Main image plus three screenshots for any product. */
 export function galleryFor(product) {
-  const pool = products.map((item) => item.image).filter((src) => src && src !== product.image)
+  const own = (product.images?.length ? product.images : [product.image]).filter(Boolean)
+  const pool = products
+    .map((item) => item.image)
+    .filter((src) => src && !own.includes(src))
+  if (!pool.length) return own
+
   const start = product.id % pool.length
-  return [product.image, pool[start % pool.length], pool[(start + 1) % pool.length]].filter(Boolean)
+  const extras = [0, 1, 2].map((offset) => pool[(start + offset) % pool.length])
+  return [...own, ...extras].filter(Boolean)
 }
 
 export function youtubeEmbed(value) {

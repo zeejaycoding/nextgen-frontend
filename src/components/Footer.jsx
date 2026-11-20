@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { DISCORD_INVITE } from '../config'
 import Logo from './Logo'
+import { useSiteSettings } from '../context/SiteSettingsContext'
 
 const socials = [
   {
@@ -11,13 +12,14 @@ const socials = [
 ]
 
 export default function Footer() {
+  const { name, tagline } = useSiteSettings()
   return (
     <footer className="site-footer">
       <div className="footer-top">
         <div className="container footer-grid">
           <div className="footer-col footer-about">
-            <h2 className="footer-title">NextGen Update</h2>
-            <p>Built for gamers who want more from the games they love.</p>
+            <h2 className="footer-title">{name}</h2>
+            <p>{tagline}</p>
           </div>
 
           <div className="footer-col">
@@ -45,7 +47,7 @@ export default function Footer() {
         <div className="container footer-bottom-inner">
           <div className="footer-brand">
             <Logo size={34} withText={false} />
-            <span>© {new Date().getFullYear()} NextGen Update. All rights reserved.</span>
+            <span>© {new Date().getFullYear()} {name}. All rights reserved.</span>
           </div>
           <ul className="social-links">
             {socials.map((social) => (

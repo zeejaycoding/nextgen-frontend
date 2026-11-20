@@ -1,5 +1,5 @@
 /* ============================================================
-   NextGen Update — game mods and tools
+   DOMIGEN — gaming, accounts and tools
    Palette: navy #022a3b / cyan #06a7ea / light gray surfaces
    ============================================================ */
 
@@ -62,7 +62,7 @@ summary:focus-visible {
 
 .container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1440px;
   margin: 0 auto;
   padding: 0 24px;
 }
@@ -1163,7 +1163,7 @@ summary:focus-visible {
 }
 
 .auth-brand-copy {
-  margin-top: auto;
+  margin-top: 30px;
 }
 
 .auth-brand-copy h2 {
@@ -1565,9 +1565,14 @@ summary:focus-visible {
     gap: 10px;
   }
 
-  .logo-mark {
+  .logo-mark:not(.logo-image--default) {
     width: 40px;
     height: 40px;
+  }
+
+  .top-header .logo-image--default {
+    width: 96px;
+    height: 96px;
   }
 
   .header-auth {
@@ -1700,6 +1705,10 @@ summary:focus-visible {
 .splash-center .logo-lockup {
   flex-direction: column;
   gap: 14px;
+}
+
+.splash-center .logo-image--default {
+  max-width: min(86vw, 520px);
 }
 
 .splash-center .logo-word {
@@ -2118,7 +2127,8 @@ summary:focus-visible {
 /* Wider, still compact mobile logo */
 @media (max-width: 760px) {
   .logo-lockup { gap: 8px; }
-  .logo-mark { width: 48px; height: 48px; }
+  .logo-mark:not(.logo-image--default) { width: 48px; height: 48px; }
+  .top-header .logo-image--default { width: 96px; height: 96px; }
   .logo-word { display: flex; }
   .logo-word-main { font-size: 14px; letter-spacing: 0.8px; }
   .logo-word-sub { margin-top: 2px; font-size: 8px; letter-spacing: 1.4px; }
@@ -2126,7 +2136,8 @@ summary:focus-visible {
 }
 
 @media (max-width: 480px) {
-  .logo-mark { width: 42px; height: 42px; }
+  .logo-mark:not(.logo-image--default) { width: 42px; height: 42px; }
+  .top-header .logo-image--default { width: 82px; height: 82px; }
   .logo-word-main { font-size: 11px; letter-spacing: 0.4px; }
   .logo-word-sub { font-size: 7px; letter-spacing: 1px; }
   .top-header-inner { min-height: 62px; gap: 8px; }
@@ -2561,7 +2572,7 @@ summary:focus-visible {
 }
 
 .fmt-page {
-  max-width: 1000px;
+  max-width: 1440px;
   color: #707070;
 }
 
@@ -2585,7 +2596,7 @@ summary:focus-visible {
 }
 
 .fmt-panel-inner {
-  max-width: 940px;
+  max-width: 1320px;
   margin: 0 auto;
 }
 
@@ -2604,8 +2615,8 @@ summary:focus-visible {
 
 .fmt-image-button img {
   width: auto;
-  max-width: 900px;
-  max-height: 500px;
+  max-width: 1100px;
+  max-height: 560px;
 }
 
 .fmt-section-title {
@@ -2679,24 +2690,39 @@ summary:focus-visible {
 }
 
 .fmt-shots {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
   margin: 12px 0;
 }
 
+/* Two shots side by side, then one wide banner below — full image, no crop. */
 .fmt-shot {
-  padding: 0;
-  border: 0;
-  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border: 1px solid #e2e8eb;
+  border-radius: 3px;
+  background: #f8f8f8;
   cursor: zoom-in;
 }
 
+.fmt-shot:nth-child(3) {
+  grid-column: 1 / -1;
+}
+
 .fmt-shot img {
-  width: 500px;
+  display: block;
+  width: auto;
   max-width: 100%;
   height: auto;
+  max-height: 420px;
+  object-fit: contain;
+}
+
+.fmt-shot:nth-child(3) img {
+  max-height: 480px;
 }
 
 .fmt-video {
@@ -2706,9 +2732,10 @@ summary:focus-visible {
 }
 
 .fmt-video iframe {
-  width: 560px;
+  width: 900px;
   max-width: 100%;
-  height: 315px;
+  aspect-ratio: 16 / 9;
+  height: auto;
   border: 0;
 }
 
@@ -2738,4 +2765,175 @@ summary:focus-visible {
   .fmt-table th, .fmt-table td { padding: 6px 4px; font-size: 11px; }
   .fmt-shot img { width: 100%; }
   .fmt-image-button img { max-height: 320px; }
+}
+
+/* ---------- Reference-style home ---------- */
+
+.settings-bridge {
+  display: none;
+}
+
+.logo-image {
+  object-fit: contain;
+}
+
+/* The uploaded WhatsApp image is a full square logo artwork — show it large. */
+.logo-image--default {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+}
+
+.top-header .logo-image--default {
+  width: 120px;
+  height: 120px;
+}
+
+.footer-brand .logo-image--default {
+  width: 90px;
+  height: 90px;
+}
+
+.auth-brand .logo-image--default {
+  width: 160px;
+  height: 160px;
+}
+
+.splash-center .logo-image--default {
+  width: min(72vw, 320px);
+  height: min(72vw, 320px);
+}
+
+.logo-word--tagline .logo-word-sub {
+  margin-top: 2px;
+}
+
+.logo-word--light .logo-word-sub {
+  color: #bfe9fa;
+}
+
+.ref-home-wrap {
+  background: #f0f0f0;
+}
+
+.ref-home {
+  max-width: 1440px;
+  color: #707070;
+}
+
+.ref-section {
+  margin-bottom: 30px;
+}
+
+.ref-page-header {
+  margin: 20px 0;
+  color: #022a3b;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.ref-product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.ref-application {
+  margin-bottom: 30px;
+  background: #f8f8f8;
+}
+
+.ref-application-content {
+  padding: 14px;
+}
+
+.ref-application-details {
+  position: relative;
+}
+
+.ref-medal {
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  z-index: 2;
+  display: block;
+  width: 42px;
+  height: 42px;
+  filter: drop-shadow(0 3px 5px rgba(2, 42, 59, 0.25));
+}
+
+.ref-medal svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ref-app-title {
+  margin-bottom: 8px;
+  color: #06a7ea;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.ref-app-picture {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 280px;
+  padding: 14px 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+
+.ref-app-picture img {
+  width: auto;
+  max-width: 100%;
+  height: 250px;
+  object-fit: contain;
+}
+
+.ref-app-infos p {
+  margin: 0 0 10px;
+  color: #707070;
+  font-size: 15px;
+}
+
+.ref-app-action {
+  margin-top: 14px;
+  text-align: right;
+}
+
+.ref-app-action .btn {
+  padding: 7px 15px;
+  background: #06a7ea;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .ref-product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  .ref-home { padding-top: 24px; padding-bottom: 40px; }
+  .ref-page-header { font-size: 20px; }
+  .ref-product-grid { grid-template-columns: 1fr; }
+  .ref-app-picture { min-height: 200px; }
+  .ref-app-picture img { height: 180px; }
+  .ref-medal { width: 36px; height: 36px; top: -8px; left: -8px; }
+  .fmt-shots { gap: 8px; }
+  .fmt-video iframe { width: 100%; }
+}
+
+/* Keep the full logo clearly visible but compact on smaller screens. */
+@media (max-width: 900px) {
+  .top-header .logo-image--default { width: 96px; height: 96px; }
+}
+
+@media (max-width: 480px) {
+  .top-header .logo-image--default { width: 82px; height: 82px; }
 }

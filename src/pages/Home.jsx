@@ -1,15 +1,20 @@
-import ProductGrid from '../components/ProductGrid'
-import { mostSold } from '../data/products'
+import HomeProductGrid from '../components/HomeProductGrid'
+import { latestApps, mostSold } from '../data/products'
 
 export default function Home() {
   return (
-    <div className="container page-content home-page">
-      <section className="section">
-        <div className="section-heading">
-          <h2>Most Selling</h2>
-        </div>
-        <ProductGrid products={mostSold} />
-      </section>
+    <div className="ref-home-wrap">
+      <div className="container page-content ref-home">
+        <section className="ref-section">
+          <h2 className="ref-page-header">Most Sold</h2>
+          <HomeProductGrid products={mostSold} showMedals />
+        </section>
+
+        <section className="ref-section">
+          <h2 className="ref-page-header">Latest Applications</h2>
+          <HomeProductGrid products={latestApps} />
+        </section>
+      </div>
     </div>
   )
 }

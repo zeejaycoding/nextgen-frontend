@@ -1,6 +1,7 @@
 import { Link, NavLink } from 'react-router-dom'
 import { DISCORD_INVITE } from '../config'
 import Logo from './Logo'
+import { useSiteSettings } from '../context/SiteSettingsContext'
 
 const navItems = [
   { label: 'Home', to: '/' },
@@ -9,12 +10,13 @@ const navItems = [
 ]
 
 export default function Header() {
+  const { name } = useSiteSettings()
   return (
     <header className="site-header">
       <div className="top-header">
         <div className="container top-header-inner">
-          <Link to="/" className="brand-link" aria-label="NextGen Update home">
-            <Logo />
+          <Link to="/" className="brand-link" aria-label={`${name} home`}>
+            <Logo withTagline={false} />
           </Link>
 
           <div className="header-auth">

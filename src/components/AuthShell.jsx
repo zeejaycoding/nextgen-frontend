@@ -1,4 +1,5 @@
 import Logo from './Logo'
+import { useSiteSettings } from '../context/SiteSettingsContext'
 
 const highlights = [
   'Exclusive mods & tools',
@@ -7,13 +8,13 @@ const highlights = [
 ]
 
 export default function AuthShell({ title, subtitle, children, footer }) {
+  const { tagline } = useSiteSettings()
   return (
     <div className="auth-page">
       <div className="auth-shell">
         <aside className="auth-brand" aria-hidden="true">
           <div className="auth-brand-top">
             <Logo size={54} withText={false} />
-            <span className="auth-brand-name">NextGen Update</span>
           </div>
           <div className="auth-brand-copy">
             <h2>Welcome to the team.</h2>
@@ -26,7 +27,7 @@ export default function AuthShell({ title, subtitle, children, footer }) {
               </li>
             ))}
           </ul>
-          <span className="auth-brand-foot">NextGen Update · Built for gamers</span>
+          <span className="auth-brand-foot">{tagline}</span>
         </aside>
 
         <div className="auth-panel">
