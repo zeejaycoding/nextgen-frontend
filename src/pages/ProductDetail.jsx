@@ -1,9 +1,16 @@
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import CheckoutModal from '../components/CheckoutModal'
 import Lightbox from '../components/Lightbox'
 import ProductImage from '../components/ProductImage'
-import { formatDate, formatPrice, galleryFor, products, youtubeEmbed } from '../data/products'
+import ReferenceBreadcrumb from '../components/ReferenceBreadcrumb'
+import {
+  formatDetailDate,
+  formatPrice,
+  galleryFor,
+  products,
+  youtubeEmbed,
+} from '../data/products'
 import NotFound from './NotFound'
 
 export default function ProductDetail() {
@@ -19,7 +26,6 @@ export default function ProductDetail() {
   const gallery = galleryFor(product)
   const embed = youtubeEmbed(product.video || 'https://www.youtube.com/watch?v=aqz-KE-bpKQ')
   const reference = String(product.id).padStart(3, '0')
-  const paragraphs = product.description.split(/\n+/).filter(Boolean)
   const screenshots = gallery.slice(1)
 
   const grouped = (product.features || []).map((feature) => {
@@ -32,30 +38,25 @@ export default function ProductDetail() {
   const namedGroups = grouped.filter((group) => group.label)
 
   return (
-    <div className="fmt-page-wrap">
-      <div className="container page-content fmt-page">
-        <nav className="breadcrumb" aria-label="Breadcrumb">
-          <Link to="/">Home</Link><span>/</span>
-          <Link to="/shop">Shop</Link><span>/</span>
-          <span>{product.title}</span>
-        </nav>
+    <>
+      <ReferenceBreadcrumb current={product.title} />
+      <div className="fmt-container fmt-page">
+        <h2 className="fmt-page-header fmt-page-header--detail">{product.title}</h2>
 
-        <h1 className="fmt-title">{product.title}</h1>
-
-        <div className="fmt-panel">
-          <div className="fmt-panel-inner">
-            <div className="fmt-picture">
+        <div className="fmt-detail">
+          <div className="fmt-detail-inner">
+            <div className="fmt-detail-picture">
               <button
                 type="button"
-                className="fmt-image-button"
+                className="fmt-detail-image-button"
                 onClick={() => setViewer(0)}
                 aria-label="Open image full size"
               >
-                <ProductImage product={product} src={gallery[0]} />
+                <ProductImage product={product} src={gallery[0]} className="fmt-detail-main-img" />
               </button>
             </div>
 
-            <h2 className="fmt-section-title">Application Informations</h2>
+            <h3 className="fmt-section-title">Application Informations</h3>
             <table className="fmt-table">
               <thead>
                 <tr>
@@ -70,16 +71,16 @@ export default function ProductDetail() {
                 <tr>
                   <td>#{reference}</td>
                   <td>{product.contact}</td>
-                  <td className="fmt-price">{formatPrice(product.price)}</td>
+                  <td>{formatPrice(product.price)}</td>
                   <td>{product.version || '1.0'}</td>
-                  <td>{formatDate(product.published)}</td>
+                  <td>{formatDetailDate(product.publishedAt, product.published)}</td>
                 </tr>
               </tbody>
             </table>
 
-            <h2 className="fmt-section-title">Description of Application</h2>
+            <h3 className="fmt-section-title">Description of Application</h3>
             <div className="fmt-description">
-              {paragraphs.map((line, index) => <p key={index}>{line}</p>)}
+              <p>{product.description}</p>
 
               {(plainFeatures.length > 0 || namedGroups.length > 0) && (
                 <>
@@ -103,12 +104,12 @@ export default function ProductDetail() {
               <p className="fmt-note">A console with <strong>CCAPI</strong> installed is required</p>
               <p>Video :</p>
 
-              <div className="fmt-shots">
-                {screenshots.map((image, index) => (
+              <div className="fmt-shot-row">
+                {screenshots.slice(0, 2).map((image, index) => (
                   <button
                     type="button"
                     key={image + index}
-                    className="fmt-shot"
+                    className="fmt-shot-button"
                     onClick={() => setViewer(index + 1)}
                     aria-label={`Open screenshot ${index + 1} full size`}
                   >
@@ -116,6 +117,19 @@ export default function ProductDetail() {
                   </button>
                 ))}
               </div>
+
+              {screenshots[2] ? (
+                <div className="fmt-shot-row fmt-shot-row--single">
+                  <button
+                    type="button"
+                    className="fmt-shot-button"
+                    onClick={() => setViewer(3)}
+                    aria-label="Open screenshot 3 full size"
+                  >
+                    <ProductImage product={product} src={screenshots[2]} />
+                  </button>
+                </div>
+              ) : null}
 
               {embed && (
                 <div className="fmt-video">
@@ -131,30 +145,30 @@ export default function ProductDetail() {
               )}
             </div>
 
-            <h2 className="fmt-section-title">Buy Application</h2>
+            <h3 className="fmt-section-title">Buy Application</h3>
             <div className="fmt-buy">
-              <strong>{formatPrice(product.price)}</strong>
-              <button type="button" className="btn btn-primary btn-lg" onClick={() => setCheckout(true)}>
-                Buy Application <span className="arrow">→</span>
+              <p className="fmt-buy-price">{formatPrice(product.price)}</p>
+              <button type="button" className="fmt-buy-btn" onClick={() => setCheckout(true)}>
+                Buy Application <span aria-hidden="true">→</span>
               </button>
-              <span>Sandbox checkout — no real payment is taken.</span>
+              <p className="fmt-buy-note">Sandbox checkout — no real payment is taken.</p>
             </div>
           </div>
         </div>
-
-        {viewer !== null && (
-          <Lightbox
-            images={gallery}
-            index={viewer}
-            onIndexChange={setViewer}
-            onClose={() => setViewer(null)}
-            product={product}
-            title={product.title}
-          />
-        )}
-
-        {checkout && <CheckoutModal product={product} onClose={() => setCheckout(false)} />}
       </div>
-    </div>
+
+      {viewer !== null && (
+        <Lightbox
+          images={gallery}
+          index={viewer}
+          onIndexChange={setViewer}
+          onClose={() => setViewer(null)}
+          product={product}
+          title={product.title}
+        />
+      )}
+
+      {checkout && <CheckoutModal product={product} onClose={() => setCheckout(false)} />}
+    </>
   )
 }

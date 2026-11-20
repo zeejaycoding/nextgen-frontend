@@ -14,6 +14,7 @@ export const products = [
     images: ['/images/revolution0.png'],
     contact: 'DOMIGEN Team',
     published: '2016-02-01',
+    publishedAt: '2016-02-01 18:24:56',
     badge: 'Bestseller',
     featured: true,
     version: '2.4',
@@ -32,6 +33,7 @@ export const products = [
     images: ['/images/phantom0.png'],
     contact: 'DOMIGEN Team',
     published: '2016-03-30',
+    publishedAt: '2016-03-30 20:16:43',
     badge: 'Bestseller',
     featured: true,
     version: '2.22',
@@ -55,6 +57,7 @@ export const products = [
     images: ['/images/memories0.png'],
     contact: 'DOMIGEN Team',
     published: '2016-01-01',
+    publishedAt: '2016-01-01 18:45:00',
     badge: 'Bestseller',
     featured: true,
     version: '1.8',
@@ -73,6 +76,7 @@ export const products = [
     images: ['/images/fatality0.png'],
     contact: 'DOMIGEN Team',
     published: '2017-09-18',
+    publishedAt: '2017-09-18 18:02:25',
     badge: 'New',
     latest: true,
     version: '1.2',
@@ -90,6 +94,7 @@ export const products = [
     images: ['/images/destiny0.png'],
     contact: 'DOMIGEN Team',
     published: '2017-03-12',
+    publishedAt: '2017-03-12 13:14:03',
     latest: true,
     version: '1.5',
     description: 'A sci-fi themed transformation for BO2 with exotic weapons and futuristic maps.',
@@ -105,6 +110,7 @@ export const products = [
     images: ['/images/fury0.png'],
     contact: 'DOMIGEN Team',
     published: '2016-07-04',
+    publishedAt: '2016-07-04 21:35:03',
     latest: true,
     version: '3.1',
     description: 'Unleash fury in Advanced Warfare with boosted movement and a fully custom HUD.',
@@ -120,6 +126,7 @@ export const products = [
     images: ['/images/eternity0.png'],
     contact: 'DOMIGEN Team',
     published: '2016-03-30',
+    publishedAt: '2016-03-30 20:17:22',
     version: '1.0',
     description: 'The ultimate Ghosts mod: extended maps, new modes and a clean, modern interface.',
   },
@@ -134,6 +141,7 @@ export const products = [
     images: ['/images/fusion0.png'],
     contact: 'DOMIGEN Team',
     published: '2016-03-01',
+    publishedAt: '2016-03-01 16:51:48',
     version: '2.0',
     description: 'Classic Black Ops fused with modern features. A fan-favourite community release.',
   },
@@ -148,6 +156,7 @@ export const products = [
     images: ['/images/ccapi0.png'],
     contact: 'DOMIGEN Team',
     published: '2013-11-11',
+    publishedAt: '2013-11-11 17:28:00',
     badge: 'Free',
     version: '2.80r14',
     description: 'A free control console API for RTE CEX + DEX. Built for developers and modders.',
@@ -163,6 +172,7 @@ export const products = [
     images: ['/images/reborn0.png'],
     contact: 'DOMIGEN Team',
     published: '2016-01-01',
+    publishedAt: '2016-01-01 22:57:00',
     version: '1.3',
     description:
       'Modern Warfare 2 is reborn with restored maps, scrapped content and quality-of-life fixes.',
@@ -183,6 +193,15 @@ export function formatDate(value) {
     month: 'short',
   })
   return `${monthName} ${day}, ${year}`
+}
+
+/** Reference detail-page date: HH:MM:SS DD/MM/YYYY */
+export function formatDetailDate(publishedAt, published) {
+  const value = publishedAt || published || ''
+  const match = value.match(/^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}:\d{2}:\d{2}))?/)
+  if (!match) return value || '—'
+  const [, year, month, day, time = '00:00:00'] = match
+  return `${time} ${day}/${month}/${year}`
 }
 
 /** Main image plus three screenshots for any product. */
