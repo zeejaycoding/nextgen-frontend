@@ -15,11 +15,7 @@ export default function ReferenceProductCard({ product, rank }) {
           ) : null}
           <div className="fmt-card-title">{product.title}</div>
           <div className="fmt-picture">
-            <img
-              src={product.image}
-              style={{ maxHeight: '200px', minHeight: '200px' }}
-              alt=""
-            />
+            <img className="fmt-card-image" src={product.image} alt="" />
           </div>
           <div className="fmt-infos">
             <p>Price : {priceLabel(product)}</p>
