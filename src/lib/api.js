@@ -6,7 +6,9 @@ export const MEMBER_AUTH_EVENT = 'domigen:member-auth'
 export const ACCOUNT_STATUS_EVENT = 'domigen:account-status'
 export const BACKEND_ERROR_EVENT = 'domigen:backend-error'
 
-const configured = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://127.0.0.1:4000' : '')
+const DEFAULT_PRODUCTION_API_URL = 'https://domigen-backend.onrender.com'
+const configured = import.meta.env.VITE_API_URL
+  || (import.meta.env.DEV ? 'http://127.0.0.1:4000' : DEFAULT_PRODUCTION_API_URL)
 
 export const API_BASE = String(configured).replace(/\/$/, '')
 
@@ -42,7 +44,11 @@ export async function apiFetch(path, { token, ...options } = {}) {
   try {
     data = await response.json()
   } catch {
-    /* Some endpoints return an empty body. */
+    const message = 'The backend returned an invalid response. Check the API URL.'
+    reportBackendError(message)
+    const error = new Error(message)
+    error.status = response.status
+    throw error
   }
 
   if (!response.ok) {
