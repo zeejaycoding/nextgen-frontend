@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react'
-import { formatPrice } from '../data/products'
+import { loadStripe } from '@stripe/stripe-js'
+import { isFreeProduct, priceLabel } from '../data/products'
+import {
+  createCheckoutSession,
+  createFreeOrder,
+  getPaymentConfig,
+  readMemberAuth,
+} from '../lib/api'
 import ProductImage from './ProductImage'
 
 function CardIcon() {
@@ -22,26 +29,66 @@ function ApplePayIcon() {
 }
 
 function Checkout({ product, onBack, onDone }) {
-  const [method, setMethod] = useState('card')
-  const [card, setCard] = useState({ name: '', number: '', expiry: '', cvc: '' })
+  const free = isFreeProduct(product)
+  const [paymentConfig, setPaymentConfig] = useState(null)
   const [error, setError] = useState('')
+  const [submitting, setSubmitting] = useState(false)
 
-  const update = (field) => (event) => {
-    setCard((current) => ({ ...current, [field]: event.target.value }))
+  useEffect(() => {
+    if (free) return
+    getPaymentConfig()
+      .then(setPaymentConfig)
+      .catch(() => setPaymentConfig({ enabled: false, publishableKey: '' }))
+  }, [free])
+
+  const claimFree = async () => {
+    const { user } = readMemberAuth()
+    setSubmitting(true)
     setError('')
+    try {
+      await createFreeOrder({
+        productId: product.id,
+        product: product.title,
+        amount: 0,
+        method: 'free',
+        customer: user?.email || user?.name || 'Member',
+      })
+      setSubmitting(false)
+      onDone()
+    } catch (paymentError) {
+      setError(paymentError.message || 'Unable to reach the server. Check that the backend is running.')
+      setSubmitting(false)
+    }
   }
 
-  const handleCardSubmit = (event) => {
-    event.preventDefault()
-    const digits = card.number.replace(/\s/g, '')
-
-    if (!card.name.trim()) return setError('Enter the name on the card.')
-    if (!/^\d{13,19}$/.test(digits)) return setError('Enter a valid card number.')
-    if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(card.expiry)) return setError('Use MM/YY for expiry.')
-    if (!/^\d{3,4}$/.test(card.cvc)) return setError('Enter a valid CVC.')
-
+  const startStripeCheckout = async (wallet) => {
+    setSubmitting(true)
     setError('')
-    onDone()
+
+    try {
+      if (!paymentConfig?.enabled) {
+        throw new Error('Online payments are not configured yet. Please contact support.')
+      }
+
+      const session = await createCheckoutSession({
+        productId: product.id,
+        wallet,
+      })
+
+      if (session.free) {
+        await claimFree()
+        return
+      }
+
+      const stripe = await loadStripe(paymentConfig.publishableKey)
+      if (!stripe) throw new Error('Could not load the secure payment form. Please try again.')
+
+      const { error: redirectError } = await stripe.redirectToCheckout({ sessionId: session.id })
+      if (redirectError) throw redirectError
+    } catch (paymentError) {
+      setError(paymentError.message || 'Unable to start checkout. Please try again.')
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -59,98 +106,63 @@ function Checkout({ product, onBack, onDone }) {
 
         <div className="order-line">
           <span>{product.title}</span>
-          <strong>{formatPrice(product.price)}</strong>
+          <strong>{priceLabel(product)}</strong>
         </div>
         <div className="order-total">
           <span>Total</span>
-          <strong>{formatPrice(product.price)}</strong>
+          <strong>{priceLabel(product)}</strong>
         </div>
 
-        <div className="payment-switch" role="group" aria-label="Payment method">
-          <button
-            type="button"
-            className={`payment-option${method === 'card' ? ' is-active' : ''}`}
-            onClick={() => { setMethod('card'); setError('') }}
-          >
-            <CardIcon /> Credit card
-          </button>
-          <button
-            type="button"
-            className={`payment-option${method === 'applepay' ? ' is-active' : ''}`}
-            onClick={() => { setMethod('applepay'); setError('') }}
-          >
-            <ApplePayIcon />
-          </button>
-        </div>
-
-        {method === 'card' ? (
-          <form className="checkout-form" onSubmit={handleCardSubmit} noValidate>
-            <label className="field">
-              <span>Cardholder name</span>
-              <input
-                type="text"
-                value={card.name}
-                onChange={update('name')}
-                placeholder="Name on card"
-                autoComplete="cc-name"
-              />
-            </label>
-            <label className="field">
-              <span>Card number</span>
-              <input
-                type="text"
-                inputMode="numeric"
-                maxLength={23}
-                value={card.number}
-                onChange={update('number')}
-                placeholder="1234 5678 9012 3456"
-                autoComplete="cc-number"
-              />
-            </label>
-            <div className="checkout-row">
-              <label className="field">
-                <span>Expiry</span>
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={5}
-                  value={card.expiry}
-                  onChange={update('expiry')}
-                  placeholder="MM/YY"
-                  autoComplete="cc-exp"
-                />
-              </label>
-              <label className="field">
-                <span>CVC</span>
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  maxLength={4}
-                  value={card.cvc}
-                  onChange={update('cvc')}
-                  placeholder="123"
-                  autoComplete="cc-csc"
-                />
-              </label>
-            </div>
-
+        {free ? (
+          <div className="free-checkout">
+            <p>This application is free. No payment details are needed.</p>
             {error && <p className="form-error" role="alert">{error}</p>}
-
-            <button type="submit" className="btn btn-primary checkout-submit">
-              Pay {formatPrice(product.price)} <span className="arrow">→</span>
-            </button>
-          </form>
-        ) : (
-          <div className="applepay-panel">
-            <ApplePayIcon />
-            <p>Confirm this payment with Apple Pay on your device.</p>
-            <button type="button" className="btn btn-applepay checkout-submit" onClick={onDone}>
-              Continue with Apple Pay
+            <button
+              type="button"
+              className="btn btn-primary checkout-submit"
+              disabled={submitting}
+              onClick={claimFree}
+            >
+              {submitting ? 'Processing…' : 'Get it free'} <span className="arrow">→</span>
             </button>
           </div>
+        ) : (
+          <>
+            <div className="payment-switch" role="group" aria-label="Payment method">
+              <button
+                type="button"
+                className="payment-option"
+                disabled={submitting || !paymentConfig?.enabled}
+                onClick={() => { setError(''); startStripeCheckout('card') }}
+              >
+                <CardIcon /> Credit card
+              </button>
+              <button
+                type="button"
+                className="payment-option"
+                disabled={submitting || !paymentConfig?.enabled}
+                onClick={() => { setError(''); startStripeCheckout('applepay') }}
+              >
+                <ApplePayIcon />
+              </button>
+            </div>
+
+            <div className="secure-payment-panel">
+              <p>
+                You’ll be redirected to Stripe’s secure checkout to enter your card details.
+                Apple Pay appears automatically on supported devices and verified domains.
+              </p>
+              {paymentConfig && !paymentConfig.enabled && (
+                <p className="form-error" role="alert">
+                  Online payments are not configured yet. Please contact support.
+                </p>
+              )}
+              {error && <p className="form-error" role="alert">{error}</p>}
+            </div>
+          </>
         )}
 
-        <p className="checkout-note">Sandbox checkout — no real payment is taken.</p>
+        {free && <p className="checkout-note">No payment is taken for free applications.</p>}
       </div>
     </>
   )
@@ -191,12 +203,10 @@ export default function CheckoutModal({ product, onClose }) {
           <div className="checkout-success">
             <div className="success-icon" aria-hidden="true">✓</div>
             <h2 id="checkout-title">Order confirmed</h2>
-            <p>
-              {product.title} has been added to your order. This is a sandbox checkout, so no
-              payment was processed.
-            </p>
+            <p>{product.title} has been added to your order.</p>
+            {!isFreeProduct(product) && <p className="success-note">Your order is awaiting review.</p>}
             <div className="success-total">
-              <span>Total</span> <strong>{formatPrice(product.price)}</strong>
+              <span>Total</span> <strong>{priceLabel(product)}</strong>
             </div>
             <button type="button" className="btn btn-primary" onClick={onClose}>Done</button>
           </div>

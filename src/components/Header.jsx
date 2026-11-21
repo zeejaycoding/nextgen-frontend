@@ -1,6 +1,7 @@
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { DISCORD_INVITE } from '../config'
 import Logo from './Logo'
+import { useMember } from '../context/MemberContext'
 import { useSiteSettings } from '../context/SiteSettingsContext'
 
 const navItems = [
@@ -11,6 +12,15 @@ const navItems = [
 
 export default function Header() {
   const { name } = useSiteSettings()
+  const { token, user, signOut } = useMember()
+  const navigate = useNavigate()
+  const memberName = user?.name || user?.username || user?.email || 'Member'
+
+  const handleLogout = () => {
+    signOut()
+    navigate('/', { replace: true })
+  }
+
   return (
     <header className="site-header">
       <div className="top-header">
@@ -20,8 +30,19 @@ export default function Header() {
           </Link>
 
           <div className="header-auth">
-            <Link to="/signin" className="auth-signin">Sign In</Link>
-            <Link to="/signup" className="btn btn-primary btn-sm">Sign Up</Link>
+            {token ? (
+              <>
+                <span className="auth-member-name">{memberName}</span>
+                <button type="button" className="auth-signin auth-logout" onClick={handleLogout}>
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/signin" className="auth-signin">Sign In</Link>
+                <Link to="/signup" className="btn btn-primary btn-sm">Sign Up</Link>
+              </>
+            )}
           </div>
         </div>
       </div>

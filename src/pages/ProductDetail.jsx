@@ -1,30 +1,47 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import CheckoutModal from '../components/CheckoutModal'
 import Lightbox from '../components/Lightbox'
 import ProductImage from '../components/ProductImage'
 import ReferenceBreadcrumb from '../components/ReferenceBreadcrumb'
+import { useProducts } from '../context/ProductsContext'
+import { readMemberAuth } from '../lib/api'
 import {
   formatDetailDate,
-  formatPrice,
   galleryFor,
-  products,
+  isFreeProduct,
+  priceLabel,
   youtubeEmbed,
 } from '../data/products'
 import NotFound from './NotFound'
 
 export default function ProductDetail() {
   const { slug } = useParams()
-  const product = products.find((item) => String(item.slug || item.id) === slug)
+  const { products, findProduct } = useProducts()
+  const product = findProduct(slug)
   const [viewer, setViewer] = useState(null)
   const [checkout, setCheckout] = useState(false)
+  const [showLoginNotice, setShowLoginNotice] = useState(false)
 
-  useEffect(() => setViewer(null), [slug])
+  useEffect(() => {
+    setViewer(null)
+    setShowLoginNotice(false)
+  }, [slug])
 
   if (!product) return <NotFound />
 
-  const gallery = galleryFor(product)
-  const embed = youtubeEmbed(product.video || 'https://www.youtube.com/watch?v=aqz-KE-bpKQ')
+  const openCheckout = () => {
+    const { token } = readMemberAuth()
+    if (!token) {
+      setShowLoginNotice(true)
+      return
+    }
+    setShowLoginNotice(false)
+    setCheckout(true)
+  }
+
+  const gallery = galleryFor(product, products)
+  const embed = youtubeEmbed(product.video)
   const reference = String(product.id).padStart(3, '0')
   const screenshots = gallery.slice(1)
 
@@ -71,7 +88,7 @@ export default function ProductDetail() {
                 <tr>
                   <td>#{reference}</td>
                   <td>{product.contact}</td>
-                  <td>{formatPrice(product.price)}</td>
+                  <td>{priceLabel(product)}</td>
                   <td>{product.version || '1.0'}</td>
                   <td>{formatDetailDate(product.publishedAt, product.published)}</td>
                 </tr>
@@ -147,11 +164,20 @@ export default function ProductDetail() {
 
             <h3 className="fmt-section-title">Buy Application</h3>
             <div className="fmt-buy">
-              <p className="fmt-buy-price">{formatPrice(product.price)}</p>
-              <button type="button" className="fmt-buy-btn" onClick={() => setCheckout(true)}>
+              <p className="fmt-buy-price">{priceLabel(product)}</p>
+              <button type="button" className="fmt-buy-btn" onClick={openCheckout}>
                 Buy Application <span aria-hidden="true">→</span>
               </button>
-              <p className="fmt-buy-note">Sandbox checkout — no real payment is taken.</p>
+              {showLoginNotice && (
+                <p className="fmt-buy-login" role="alert">
+                  Please <Link to="/signin">sign in</Link> to buy this application.
+                </p>
+              )}
+              <p className="fmt-buy-note">
+                {isFreeProduct(product)
+                  ? 'Free application — no payment details needed.'
+                  : 'Secure checkout powered by Stripe.'}
+              </p>
             </div>
           </div>
         </div>

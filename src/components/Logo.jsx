@@ -1,4 +1,5 @@
-import { useSiteSettings, DEFAULT_SETTINGS } from '../context/SiteSettingsContext'
+import { useSiteSettings } from '../context/SiteSettingsContext'
+import { DEFAULT_SETTINGS } from '../lib/site-settings'
 
 /** Site logo: admin-controlled artwork with a text fallback. */
 export default function Logo({ size = 46, withText = true, withTagline = true, light = false }) {

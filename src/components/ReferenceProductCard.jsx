@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { formatPrice } from '../data/products'
+import { priceLabel } from '../data/products'
 import RankMedal from './RankMedal'
 
 /** Card markup matching the reference application grid. */
@@ -22,7 +22,7 @@ export default function ReferenceProductCard({ product, rank }) {
             />
           </div>
           <div className="fmt-infos">
-            <p>Price : {formatPrice(product.price)}</p>
+            <p>Price : {priceLabel(product)}</p>
             <p>
               Contact : <span className="fmt-contact">{product.contact}</span>
             </p>

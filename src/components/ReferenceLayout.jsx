@@ -1,13 +1,22 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { DISCORD_INVITE } from '../config'
+import { useMember } from '../context/MemberContext'
 import { useSiteSettings } from '../context/SiteSettingsContext'
 import ReferenceFooter from './ReferenceFooter'
 
 /** Header, navigation and footer used only by the three reference-clone pages. */
 export default function ReferenceLayout({ children }) {
   const { name, logo } = useSiteSettings()
+  const { token, user, signOut } = useMember()
+  const navigate = useNavigate()
   const { pathname } = useLocation()
   const onHome = pathname === '/'
+  const memberName = user?.name || user?.username || user?.email || 'Member'
+
+  const handleLogout = () => {
+    signOut()
+    navigate('/', { replace: true })
+  }
   const onShop = pathname.startsWith('/shop') || pathname.startsWith('/product')
 
   return (
@@ -15,12 +24,23 @@ export default function ReferenceLayout({ children }) {
       <div className="fmt-topbar">
         <div className="fmt-container fmt-topbar-inner">
           <ul className="fmt-topbar-links">
-            <li>
-              <Link to="/signin">Sign In</Link> |
-            </li>
-            <li>
-              <Link to="/signup">Sign Up</Link>
-            </li>
+            {token ? (
+              <>
+                <li><span className="fmt-member-name">Hi, {memberName}</span> |</li>
+                <li>
+                  <button type="button" className="fmt-logout" onClick={handleLogout}>Logout</button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link to="/signin">Sign In</Link> |
+                </li>
+                <li>
+                  <Link to="/signup">Sign Up</Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>

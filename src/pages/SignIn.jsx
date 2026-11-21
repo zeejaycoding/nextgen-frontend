@@ -1,11 +1,13 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import AuthShell from '../components/AuthShell'
+import { signInMember } from '../lib/api'
 
 export default function SignIn() {
+  const navigate = useNavigate()
   const [form, setForm] = useState({ email: '', password: '', remember: true })
   const [error, setError] = useState('')
-  const [done, setDone] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [resetNotice, setResetNotice] = useState(false)
 
@@ -13,10 +15,9 @@ export default function SignIn() {
     const value = field === 'remember' ? event.target.checked : event.target.value
     setForm((current) => ({ ...current, [field]: value }))
     setError('')
-    setDone(false)
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
 
     if (!/^\S+@\S+\.\S+$/.test(form.email)) {
@@ -29,7 +30,15 @@ export default function SignIn() {
     }
 
     setError('')
-    setDone(true)
+    setSubmitting(true)
+    try {
+      await signInMember({ email: form.email.trim(), password: form.password })
+      navigate('/', { replace: true })
+    } catch (error) {
+      setError(error.status ? error.message : 'Unable to sign in right now. Please try again.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -93,19 +102,14 @@ export default function SignIn() {
         </div>
 
         {error && <p className="form-error" role="alert">{error}</p>}
-        {done && (
-          <p className="form-success" role="status">
-            Demo sign-in successful — no account was contacted.
-          </p>
-        )}
         {resetNotice && (
           <p className="form-info" role="status">
-            Password reset isn’t connected in this front-end demo.
+            Password reset isn’t available yet. Please contact support.
           </p>
         )}
 
-        <button type="submit" className="btn btn-primary btn-block">
-          Sign in <span className="arrow">→</span>
+        <button type="submit" className="btn btn-primary btn-block" disabled={submitting}>
+          {submitting ? 'Signing in…' : 'Sign in'} <span className="arrow">→</span>
         </button>
       </form>
     </AuthShell>

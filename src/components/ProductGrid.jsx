@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { formatDate, formatPrice, galleryFor } from '../data/products'
+import { formatDate, galleryFor, isFreeProduct, priceLabel } from '../data/products'
 import Lightbox from './Lightbox'
 import ProductImage from './ProductImage'
 
@@ -40,8 +40,8 @@ export default function ProductGrid({ products }) {
               <dl className="product-meta">
                 <div>
                   <dt>Price</dt>
-                  <dd className={product.price === 0 ? 'price-free' : 'price'}>
-                    {formatPrice(product.price)}
+                  <dd className={isFreeProduct(product) ? 'price-free' : 'price'}>
+                    {priceLabel(product)}
                   </dd>
                 </div>
                 <div>
@@ -64,7 +64,7 @@ export default function ProductGrid({ products }) {
 
       {viewer && (
         <Lightbox
-          images={galleryFor(viewer.product)}
+          images={galleryFor(viewer.product, products)}
           index={viewer.index}
           onIndexChange={(index) => setViewer((current) => ({ ...current, index }))}
           onClose={() => setViewer(null)}

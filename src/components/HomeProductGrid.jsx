@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { formatPrice, galleryFor } from '../data/products'
+import { galleryFor, priceLabel } from '../data/products'
 import Lightbox from './Lightbox'
 import ProductImage from './ProductImage'
 import RankMedal from './RankMedal'
@@ -30,7 +30,7 @@ export default function HomeProductGrid({ products, showMedals = false }) {
                   <ProductImage product={product} />
                 </button>
                 <div className="ref-app-infos">
-                  <p>Price : {formatPrice(product.price)}</p>
+                  <p>Price : {priceLabel(product)}</p>
                   <p>Contact : {product.contact}</p>
                   <p>Published at : {product.published}</p>
                   <p className="ref-app-action">
@@ -45,7 +45,7 @@ export default function HomeProductGrid({ products, showMedals = false }) {
 
       {viewer && (
         <Lightbox
-          images={galleryFor(viewer.product)}
+          images={galleryFor(viewer.product, products)}
           index={viewer.index}
           onIndexChange={(index) => setViewer((current) => ({ ...current, index }))}
           onClose={() => setViewer(null)}

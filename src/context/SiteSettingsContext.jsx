@@ -1,12 +1,8 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { apiFetch, createSocket } from '../lib/api'
+import { DEFAULT_SETTINGS } from '../lib/site-settings'
 
-export const SETTINGS_KEY = 'domigen-site-settings'
-
-export const DEFAULT_SETTINGS = {
-  name: 'DOMIGEN',
-  tagline: 'Gaming . accounts . tools',
-  logo: '/images/domigen-logo.jpeg',
-}
+const SETTINGS_KEY = 'domigen-site-settings'
 
 const REQUEST = 'DOMIGEN_REQUEST_SETTINGS'
 const SETTINGS = 'DOMIGEN_SETTINGS'
@@ -31,7 +27,7 @@ function read() {
   }
 }
 
-const configuredAdmin = import.meta.env.VITE_ADMIN_URL || (import.meta.env.DEV ? 'http://127.0.0.1:5174' : '')
+const configuredAdmin = import.meta.env.VITE_ADMIN_URL || (import.meta.env.DEV ? 'http://localhost:5174' : '')
 
 export function SiteSettingsProvider({ children }) {
   const [settings, setSettings] = useState(read)
@@ -50,6 +46,28 @@ export function SiteSettingsProvider({ children }) {
   const pull = useCallback(() => {
     bridge.current?.contentWindow?.postMessage({ type: REQUEST }, '*')
   }, [])
+
+  useEffect(() => {
+    let active = true
+
+    apiFetch('/settings')
+      .then((remote) => {
+        if (active) apply(remote)
+      })
+      .catch(() => {
+        /* apiFetch already raises the visible backend notice; keep the last
+           known branding only so the page can still render. */
+      })
+
+    const socket = createSocket()
+    socket.on('settings', apply)
+    socket.connect()
+
+    return () => {
+      active = false
+      socket.disconnect()
+    }
+  }, [apply])
 
   useEffect(() => {
     const onStorage = (event) => {

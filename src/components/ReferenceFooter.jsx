@@ -40,7 +40,6 @@ export default function ReferenceFooter() {
               </div>
               <div className="fmt-widget-content">
                 <ul className="fmt-footer-nav">
-                  <li><a href="/terms">Terms of Use</a></li>
                   <li><Link to="/signin">Sign In</Link></li>
                   <li><Link to="/signup">Sign Up</Link></li>
                 </ul>

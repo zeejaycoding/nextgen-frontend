@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import AuthShell from '../components/AuthShell'
+import { signUpMember } from '../lib/api'
 
 const initialForm = {
   username: '',
@@ -11,18 +12,18 @@ const initialForm = {
 }
 
 export default function SignUp() {
+  const navigate = useNavigate()
   const [form, setForm] = useState(initialForm)
   const [error, setError] = useState('')
-  const [done, setDone] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
 
   const update = (field) => (event) => {
     const value = field === 'terms' ? event.target.checked : event.target.value
     setForm((current) => ({ ...current, [field]: value }))
     setError('')
-    setDone(false)
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
 
     if (form.username.trim().length < 3) {
@@ -47,7 +48,19 @@ export default function SignUp() {
     }
 
     setError('')
-    setDone(true)
+    setSubmitting(true)
+    try {
+      await signUpMember({
+        username: form.username.trim(),
+        email: form.email.trim(),
+        password: form.password,
+      })
+      navigate('/', { replace: true })
+    } catch (error) {
+      setError(error.status ? error.message : 'Unable to create your account right now. Please try again.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -111,14 +124,9 @@ export default function SignUp() {
         </label>
 
         {error && <p className="form-error" role="alert">{error}</p>}
-        {done && (
-          <p className="form-success" role="status">
-            Demo account created — nothing was saved.
-          </p>
-        )}
 
-        <button type="submit" className="btn btn-primary btn-block">
-          Create account <span className="arrow">→</span>
+        <button type="submit" className="btn btn-primary btn-block" disabled={submitting}>
+          {submitting ? 'Creating…' : 'Create account'} <span className="arrow">→</span>
         </button>
       </form>
     </AuthShell>

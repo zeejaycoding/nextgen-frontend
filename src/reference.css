@@ -100,6 +100,29 @@
   color: #bfe9ff;
 }
 
+.fmt-clone .fmt-topbar-links .fmt-member-name {
+  display: inline-block;
+  padding-top: 6px;
+  font-weight: 400;
+}
+
+.fmt-clone .fmt-topbar-links .fmt-logout {
+  display: inline-block;
+  padding: 6px 0 0;
+  border: 0;
+  background: none;
+  color: #fff;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  text-shadow: none;
+}
+
+.fmt-clone .fmt-topbar-links .fmt-logout:hover {
+  color: #bfe9ff;
+}
+
 /* ---------- Header / brand ---------- */
 
 .fmt-clone .fmt-header {
@@ -321,6 +344,11 @@
 .fmt-clone .fmt-page-header--detail {
   color: var(--fmt-cyan);
   text-align: center;
+}
+
+.fmt-clone .fmt-empty {
+  margin: 20px 0;
+  color: var(--fmt-muted, #70858e);
 }
 
 /* ---------- Application cards ---------- */
@@ -626,6 +654,21 @@
   margin-top: 10px;
   font-size: 12px;
   color: #909090;
+}
+
+.fmt-clone .fmt-buy-login {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-radius: 3px;
+  background: #eaf7fd;
+  color: var(--fmt-navy-2, #02344a);
+  font-size: 13px;
+}
+
+.fmt-clone .fmt-buy-login a {
+  color: var(--fmt-cyan, #06a7ea);
+  font-weight: 700;
+  text-decoration: underline;
 }
 
 /* ---------- Footer ---------- */
