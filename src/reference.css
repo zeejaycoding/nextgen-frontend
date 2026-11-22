@@ -353,8 +353,23 @@
 
 /* ---------- Application cards ---------- */
 
+.fmt-clone .fmt-main {
+  padding-bottom: 32px;
+}
+
 .fmt-clone .fmt-grid {
-  margin-left: -20px;
+  margin: 0 0 30px -20px;
+}
+
+.fmt-clone .fmt-grid::before,
+.fmt-clone .fmt-grid::after {
+  display: table;
+  content: '';
+  line-height: 0;
+}
+
+.fmt-clone .fmt-grid::after {
+  clear: both;
 }
 
 .fmt-clone .fmt-card {
