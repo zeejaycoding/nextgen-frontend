@@ -1,6 +1,5 @@
 import { useLocation } from 'react-router-dom'
 import AccountNotice from './AccountNotice'
-import BackendNotice from './BackendNotice'
 import Header from './Header'
 import Footer from './Footer'
 import ReferenceLayout from './ReferenceLayout'
@@ -12,7 +11,6 @@ export default function Layout({ children }) {
   return (
     <>
       <AccountNotice />
-      <BackendNotice />
       {clonePage ? (
         <ReferenceLayout>{children}</ReferenceLayout>
       ) : (
