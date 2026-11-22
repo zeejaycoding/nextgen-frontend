@@ -831,11 +831,12 @@
   .fmt-clone .fmt-breadcrumb-section { width: auto; margin: 0 25px 40px 5px; }
   .fmt-clone .fmt-breadcrumb { padding: 8px 0; }
   .fmt-clone .fmt-page-header { font-size: 24px; line-height: 40px; }
+  .fmt-clone .fmt-main { padding-bottom: 28px; }
   .fmt-clone .fmt-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
-    margin-left: 0;
+    margin: 0 0 30px;
   }
   .fmt-clone .fmt-grid::before,
   .fmt-clone .fmt-grid::after { display: none; }
