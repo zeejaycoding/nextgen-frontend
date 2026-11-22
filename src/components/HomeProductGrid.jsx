@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { galleryFor, priceLabel } from '../data/products'
+import { formatDetailDate, galleryFor, priceLabel } from '../data/products'
 import Lightbox from './Lightbox'
 import ProductImage from './ProductImage'
 import RankMedal from './RankMedal'
@@ -32,7 +32,7 @@ export default function HomeProductGrid({ products, showMedals = false }) {
                 <div className="ref-app-infos">
                   <p>Price : {priceLabel(product)}</p>
                   <p>Contact : {product.contact}</p>
-                  <p>Published at : {product.published}</p>
+                  <p>Published at : {formatDetailDate(product.publishedAt, product.published)}</p>
                   <p className="ref-app-action">
                     <Link to={productPath(product)} className="btn btn-primary">More info</Link>
                   </p>

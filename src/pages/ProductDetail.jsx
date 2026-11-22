@@ -62,16 +62,18 @@ export default function ProductDetail() {
 
         <div className="fmt-detail">
           <div className="fmt-detail-inner">
-            <div className="fmt-detail-picture">
-              <button
-                type="button"
-                className="fmt-detail-image-button"
-                onClick={() => setViewer(0)}
-                aria-label="Open image full size"
-              >
-                <ProductImage product={product} src={gallery[0]} className="fmt-detail-main-img" />
-              </button>
-            </div>
+            {gallery[0] ? (
+              <div className="fmt-detail-picture">
+                <button
+                  type="button"
+                  className="fmt-detail-image-button"
+                  onClick={() => setViewer(0)}
+                  aria-label="Open image full size"
+                >
+                  <ProductImage product={product} src={gallery[0]} className="fmt-detail-main-img" />
+                </button>
+              </div>
+            ) : null}
 
             <h3 className="fmt-section-title">Application Informations</h3>
             <table className="fmt-table">
@@ -89,7 +91,7 @@ export default function ProductDetail() {
                   <td>#{reference}</td>
                   <td>{product.contact}</td>
                   <td>{priceLabel(product)}</td>
-                  <td>{product.version || '1.0'}</td>
+                  <td>{product.version || '—'}</td>
                   <td>{formatDetailDate(product.publishedAt, product.published)}</td>
                 </tr>
               </tbody>
@@ -101,7 +103,6 @@ export default function ProductDetail() {
 
               {(plainFeatures.length > 0 || namedGroups.length > 0) && (
                 <>
-                  <p>A few features that are available:</p>
                   {plainFeatures.length > 0 && (
                     <ul>
                       {plainFeatures.map((feature) => <li key={feature}>{feature}</li>)}
@@ -118,35 +119,36 @@ export default function ProductDetail() {
                 </>
               )}
 
-              <p className="fmt-note">A console with <strong>CCAPI</strong> installed is required</p>
-              <p>Video :</p>
+              {screenshots.length > 0 && (
+                <>
+                  <div className="fmt-shot-row">
+                    {screenshots.slice(0, 2).map((image, index) => (
+                      <button
+                        type="button"
+                        key={image + index}
+                        className="fmt-shot-button"
+                        onClick={() => setViewer(index + 1)}
+                        aria-label={`Open screenshot ${index + 1} full size`}
+                      >
+                        <ProductImage product={product} src={image} />
+                      </button>
+                    ))}
+                  </div>
 
-              <div className="fmt-shot-row">
-                {screenshots.slice(0, 2).map((image, index) => (
-                  <button
-                    type="button"
-                    key={image + index}
-                    className="fmt-shot-button"
-                    onClick={() => setViewer(index + 1)}
-                    aria-label={`Open screenshot ${index + 1} full size`}
-                  >
-                    <ProductImage product={product} src={image} />
-                  </button>
-                ))}
-              </div>
-
-              {screenshots[2] ? (
-                <div className="fmt-shot-row fmt-shot-row--single">
-                  <button
-                    type="button"
-                    className="fmt-shot-button"
-                    onClick={() => setViewer(3)}
-                    aria-label="Open screenshot 3 full size"
-                  >
-                    <ProductImage product={product} src={screenshots[2]} />
-                  </button>
-                </div>
-              ) : null}
+                  {screenshots[2] ? (
+                    <div className="fmt-shot-row fmt-shot-row--single">
+                      <button
+                        type="button"
+                        className="fmt-shot-button"
+                        onClick={() => setViewer(3)}
+                        aria-label="Open screenshot 3 full size"
+                      >
+                        <ProductImage product={product} src={screenshots[2]} />
+                      </button>
+                    </div>
+                  ) : null}
+                </>
+              )}
 
               {embed && (
                 <div className="fmt-video">
