@@ -944,6 +944,8 @@
   .fmt-clone .fmt-footer-tagline { display: none; }
   .fmt-clone .fmt-share { float: right; text-align: center; }
   .fmt-clone .fmt-share-nav {
+    position: relative;
+    left: -50%;
     float: none;
     display: inline-block;
     margin-top: 0;
