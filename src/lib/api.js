@@ -125,12 +125,12 @@ export async function signUpMember(details) {
   return data
 }
 
-export async function createFreeOrder(payload) {
+export async function createFreeOrder(productId) {
   const { token } = readMemberAuth()
   return apiFetch('/payments', {
     method: 'POST',
     token,
-    body: JSON.stringify(payload),
+    body: JSON.stringify({ productId }),
   })
 }
 

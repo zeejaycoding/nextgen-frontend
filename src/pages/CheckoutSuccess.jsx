@@ -16,43 +16,80 @@ export default function CheckoutSuccess() {
     }
 
     let active = true
-    getCheckoutSession(sessionId)
-      .then((data) => {
-        if (!active) return
-        setState({
-          status: data.paid ? 'paid' : 'processing',
-          product: data.product,
-          amount: data.amount,
-        })
-      })
-      .catch((error) => {
-        if (active) setState({ status: 'error', message: error.message })
-      })
+    let timer
 
-    return () => { active = false }
+    // Stripe normally confirms a card payment before this redirect finishes.
+    // These retries only re-read Stripe; no local success state is invented.
+    const confirm = async (attempt = 0) => {
+      try {
+        const data = await getCheckoutSession(sessionId)
+        if (!active) return
+
+        if (data.paid || attempt >= 8) {
+          setState({
+            ...data,
+            status: data.paid ? 'paid' : 'unpaid',
+          })
+          return
+        }
+
+        timer = setTimeout(() => confirm(attempt + 1), 1000)
+      } catch (error) {
+        if (active) setState({ status: 'error', message: error.message })
+      }
+    }
+
+    confirm()
+
+    return () => {
+      active = false
+      clearTimeout(timer)
+    }
   }, [sessionId, token])
+
+  const money = (amount, currency) => `${currency || 'USD'} ${Number(amount || 0).toFixed(2)}`
 
   return (
     <div className="fmt-container fmt-page checkout-result">
       <h2 className="fmt-page-header">
-        {state.status === 'paid' ? 'Payment confirmed' : state.status === 'processing' ? 'Payment processing' : 'Checkout issue'}
+        {state.status === 'paid'
+          ? 'Payment confirmed by Stripe'
+          : state.status === 'unpaid'
+            ? 'Payment not completed'
+            : state.status === 'loading'
+              ? 'Checking Stripe'
+              : 'Checkout issue'}
       </h2>
 
-      {state.status === 'loading' && <p>Confirming your payment with Stripe…</p>}
+      {state.status === 'loading' && <p>Confirming this Checkout Session with Stripe…</p>}
 
       {state.status === 'paid' && (
         <>
-          <p>Your payment for <strong>{state.product}</strong> was successful.</p>
-          <p>Amount paid: <strong>${Number(state.amount || 0).toFixed(2)}</strong></p>
-          <p>Your order has been recorded and is now visible in the admin dashboard.</p>
+          <p>
+            Stripe reports your payment for <strong>{state.product}</strong> as successful.
+          </p>
+          <p>Amount paid: <strong>{money(state.amount, state.currency)}</strong></p>
+          <p>Method: <strong>{state.method}</strong></p>
+          {state.cardBrand && state.cardLast4 && (
+            <p>Card: <strong>{state.cardBrand} •••• {state.cardLast4}</strong></p>
+          )}
+          {state.paymentIntentId && (
+            <p>Stripe reference: <strong>{state.paymentIntentId}</strong></p>
+          )}
+          {state.recorded && (
+            <p>This order is now in the admin payment record, taken from Stripe.</p>
+          )}
         </>
       )}
 
-      {state.status === 'processing' && (
-        <p>
-          Your payment for <strong>{state.product}</strong> is still being confirmed.
-          It will appear in your orders shortly.
-        </p>
+      {state.status === 'unpaid' && (
+        <>
+          <p>Stripe has not confirmed a payment for this Checkout Session.</p>
+          <p>
+            Checkout status: <strong>{state.stripeStatus || 'not completed'}</strong>
+            {' · '}Payment status: <strong>{state.paymentStatus || 'unpaid'}</strong>
+          </p>
+        </>
       )}
 
       {state.status === 'error' && <p className="form-error">{state.message}</p>}

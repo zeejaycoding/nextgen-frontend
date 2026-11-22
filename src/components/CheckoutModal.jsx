@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react'
-import { loadStripe } from '@stripe/stripe-js'
 import { isFreeProduct, priceLabel } from '../data/products'
 import {
   createCheckoutSession,
   createFreeOrder,
   getPaymentConfig,
-  readMemberAuth,
 } from '../lib/api'
 import ProductImage from './ProductImage'
 
@@ -38,53 +36,47 @@ function Checkout({ product, onBack, onDone }) {
     if (free) return
     getPaymentConfig()
       .then(setPaymentConfig)
-      .catch(() => setPaymentConfig({ enabled: false, publishableKey: '' }))
+      .catch((configError) => setPaymentConfig({
+        enabled: false,
+        publishableKey: '',
+        message: configError.message,
+      }))
   }, [free])
 
   const claimFree = async () => {
-    const { user } = readMemberAuth()
     setSubmitting(true)
     setError('')
     try {
-      await createFreeOrder({
-        productId: product.id,
-        product: product.title,
-        amount: 0,
-        method: 'free',
-        customer: user?.email || user?.name || 'Member',
-      })
+      await createFreeOrder(product.id)
       setSubmitting(false)
       onDone()
     } catch (paymentError) {
-      setError(paymentError.message || 'Unable to reach the server. Check that the backend is running.')
+      setError(paymentError.message || 'Unable to reach the server.')
       setSubmitting(false)
     }
   }
 
-  const startStripeCheckout = async (wallet) => {
+  const startStripeCheckout = async () => {
     setSubmitting(true)
     setError('')
 
     try {
       if (!paymentConfig?.enabled) {
-        throw new Error('Online payments are not configured yet. Please contact support.')
+        throw new Error(paymentConfig?.message || 'Stripe payments are not configured on the server.')
       }
 
-      const session = await createCheckoutSession({
-        productId: product.id,
-        wallet,
-      })
+      const session = await createCheckoutSession({ productId: product.id })
 
       if (session.free) {
         await claimFree()
         return
       }
 
-      const stripe = await loadStripe(paymentConfig.publishableKey)
-      if (!stripe) throw new Error('Could not load the secure payment form. Please try again.')
+      if (!session.url) throw new Error('Stripe did not return a checkout URL. Please try again.')
 
-      const { error: redirectError } = await stripe.redirectToCheckout({ sessionId: session.id })
-      if (redirectError) throw redirectError
+      // Stripe.js removed redirectToCheckout in 2025. The server-created
+      // session URL is the supported way to enter Stripe Checkout.
+      window.location.assign(session.url)
     } catch (paymentError) {
       setError(paymentError.message || 'Unable to start checkout. Please try again.')
       setSubmitting(false)
@@ -133,7 +125,7 @@ function Checkout({ product, onBack, onDone }) {
                 type="button"
                 className="payment-option"
                 disabled={submitting || !paymentConfig?.enabled}
-                onClick={() => { setError(''); startStripeCheckout('card') }}
+                onClick={() => { setError(''); startStripeCheckout() }}
               >
                 <CardIcon /> Credit card
               </button>
@@ -141,7 +133,7 @@ function Checkout({ product, onBack, onDone }) {
                 type="button"
                 className="payment-option"
                 disabled={submitting || !paymentConfig?.enabled}
-                onClick={() => { setError(''); startStripeCheckout('applepay') }}
+                onClick={() => { setError(''); startStripeCheckout() }}
               >
                 <ApplePayIcon />
               </button>
@@ -149,12 +141,12 @@ function Checkout({ product, onBack, onDone }) {
 
             <div className="secure-payment-panel">
               <p>
-                You’ll be redirected to Stripe’s secure checkout to enter your card details.
-                Apple Pay appears automatically on supported devices and verified domains.
+                Both options open Stripe Checkout. Stripe shows Apple Pay on supported
+                devices and verified domains; no card details are stored by DOMIGEN.
               </p>
               {paymentConfig && !paymentConfig.enabled && (
                 <p className="form-error" role="alert">
-                  Online payments are not configured yet. Please contact support.
+                  {paymentConfig.message || 'Stripe payments are not configured on the server.'}
                 </p>
               )}
               {error && <p className="form-error" role="alert">{error}</p>}
@@ -202,9 +194,9 @@ export default function CheckoutModal({ product, onClose }) {
         {step === 'success' && (
           <div className="checkout-success">
             <div className="success-icon" aria-hidden="true">✓</div>
-            <h2 id="checkout-title">Order confirmed</h2>
-            <p>{product.title} has been added to your order.</p>
-            {!isFreeProduct(product) && <p className="success-note">Your order is awaiting review.</p>}
+            <h2 id="checkout-title">Free application added</h2>
+            <p>{product.title} has been added to your order at no cost.</p>
+            <p className="success-note">No payment was taken because this application is free.</p>
             <div className="success-total">
               <span>Total</span> <strong>{priceLabel(product)}</strong>
             </div>
