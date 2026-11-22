@@ -140,10 +140,7 @@ function Checkout({ product, onBack, onDone }) {
             </div>
 
             <div className="secure-payment-panel">
-              <p>
-                Both options open Stripe Checkout. Stripe shows Apple Pay on supported
-                devices and verified domains; no card details are stored by DOMIGEN.
-              </p>
+              <p>No card details are stored by DOMIGEN.</p>
               {paymentConfig && !paymentConfig.enabled && (
                 <p className="form-error" role="alert">
                   {paymentConfig.message || 'Stripe payments are not configured on the server.'}

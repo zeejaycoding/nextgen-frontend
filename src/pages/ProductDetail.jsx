@@ -178,7 +178,7 @@ export default function ProductDetail() {
               <p className="fmt-buy-note">
                 {isFreeProduct(product)
                   ? 'Free application — no payment details needed.'
-                  : 'Secure checkout powered by Stripe.'}
+                  : 'No card details are stored by DOMIGEN.'}
               </p>
             </div>
           </div>
