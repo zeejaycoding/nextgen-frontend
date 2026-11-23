@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
+import { useAutoUpdate } from './lib/useAutoUpdate'
 import Layout from './components/Layout'
 import Home from './pages/Home'
 import Shop from './pages/Shop'
@@ -32,6 +33,8 @@ function ScrollManager() {
 }
 
 export default function App() {
+  useAutoUpdate()
+
   return (
     <>
       <ScrollManager />
