@@ -821,7 +821,7 @@
 
 .fmt-clone .fmt-share-nav li {
   display: inline-block;
-  margin-left: 20px;
+  margin-left: 26px;
   padding: 0;
   background-image: none;
   color: #fff;
@@ -837,6 +837,15 @@
   font-size: 20px;
   font-style: normal;
   line-height: 23px;
+}
+
+.fmt-clone .fmt-social-icon svg {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin-top: -2px;
+  fill: currentColor;
+  vertical-align: middle;
 }
 
 /* ---------- Mobile ---------- */
@@ -945,13 +954,13 @@
   .fmt-clone .fmt-share { float: right; text-align: center; }
   .fmt-clone .fmt-share-nav {
     position: relative;
-    left: -50%;
+    left: -56%;
     float: none;
     display: inline-block;
     margin-top: 0;
   }
-  .fmt-clone .fmt-share-nav li { margin-left: 8px; }
-  .fmt-clone .fmt-social-icon { font-size: 12px; line-height: 16px; }
+  .fmt-clone .fmt-share-nav li { margin-left: 12px; }
+  .fmt-clone .fmt-social-icon { font-size: 14px; line-height: 18px; }
   .fmt-clone .fmt-table { display: block; overflow-x: auto; white-space: nowrap; }
   .fmt-clone .fmt-section-title { margin: 30px 0 16px; }
 }
@@ -976,6 +985,6 @@
   .fmt-clone .fmt-footer-nav li { padding: 2px 0; }
   .fmt-clone .fmt-ad { height: 50px; }
   .fmt-clone .fmt-copyright p { font-size: 8px; line-height: 12px; }
-  .fmt-clone .fmt-social-icon { font-size: 11px; }
-  .fmt-clone .fmt-share-nav li { margin-left: 5px; }
+  .fmt-clone .fmt-social-icon { font-size: 13px; }
+  .fmt-clone .fmt-share-nav li { margin-left: 9px; }
 }
