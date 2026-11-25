@@ -1,20 +1,37 @@
-/** Small rank medal used on the best-selling product cards. */
+/** Polished cyan medal badge with the rank number, worn on the card corner. */
 export default function RankMedal({ rank }) {
   if (!rank || rank > 3) return null
 
+  const gradientId = `medal-gradient-${rank}`
+
   return (
     <span className="ref-medal" aria-label={`Rank ${rank}`}>
-      <svg viewBox="0 0 48 48" role="img" aria-hidden="true">
+      <svg viewBox="0 0 56 64" aria-hidden="true" focusable="false">
         <defs>
-          <linearGradient id={`medal-${rank}`} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor={rank === 1 ? '#7fe4ff' : rank === 2 ? '#5fc9f2' : '#43a9d4'} />
-            <stop offset="100%" stopColor="#0288c4" />
+          <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#4fd0ff" />
+            <stop offset="100%" stopColor="#0489cf" />
           </linearGradient>
         </defs>
-        <path d="M14 30 8 44l10-4 6 6 6-6 10 4-6-14Z" fill="#0288c4" opacity=".85" />
-        <circle cx="24" cy="20" r="16" fill={`url(#medal-${rank})`} stroke="#056f9c" strokeWidth="2" />
-        <circle cx="24" cy="20" r="12.5" fill="none" stroke="#fff" strokeOpacity=".55" strokeWidth="1.5" />
-        <text x="24" y="26" textAnchor="middle" fontSize="17" fontWeight="800" fill="#fff">{rank}</text>
+        <path className="ref-medal-ribbon" d="M13 5 L28 20 L19 34 L4 19 Z" />
+        <path className="ref-medal-ribbon" d="M43 5 L28 20 L37 34 L52 19 Z" />
+        <circle
+          className="ref-medal-disc"
+          cx="28"
+          cy="42"
+          r="19"
+          fill={`url(#${gradientId})`}
+        />
+        <circle className="ref-medal-inner" cx="28" cy="42" r="15" />
+        <text
+          className="ref-medal-number"
+          x="28"
+          y="42"
+          textAnchor="middle"
+          dominantBaseline="central"
+        >
+          {rank}
+        </text>
       </svg>
     </span>
   )

@@ -20,7 +20,7 @@ export default function ReferenceProductCard({ product, rank }) {
             </div>
           ) : null}
           <div className="fmt-infos">
-            <p>Price : {priceLabel(product)}</p>
+            <p className="fmt-price-line">Price : <strong>{priceLabel(product)}</strong></p>
             <p>
               Contact : <span className="fmt-contact">{product.contact}</span>
             </p>

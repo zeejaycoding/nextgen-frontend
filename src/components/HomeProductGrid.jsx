@@ -30,7 +30,7 @@ export default function HomeProductGrid({ products, showMedals = false }) {
                   <ProductImage product={product} />
                 </button>
                 <div className="ref-app-infos">
-                  <p>Price : {priceLabel(product)}</p>
+                  <p className="fmt-price-line">Price : <strong>{priceLabel(product)}</strong></p>
                   <p>Contact : {product.contact}</p>
                   <p>Published at : {formatDetailDate(product.publishedAt, product.published)}</p>
                   <p className="ref-app-action">

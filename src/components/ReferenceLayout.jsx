@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { DISCORD_INVITE } from '../config'
+import { brandSegments } from '../lib/brand'
 import { useMember } from '../context/MemberContext'
 import { useSiteSettings } from '../context/SiteSettingsContext'
 import ReferenceFooter from './ReferenceFooter'
@@ -18,6 +19,7 @@ export default function ReferenceLayout({ children }) {
     navigate('/', { replace: true })
   }
   const onShop = pathname.startsWith('/shop') || pathname.startsWith('/product')
+  const brandParts = brandSegments(name)
 
   return (
     <div className="fmt-clone">
@@ -26,6 +28,7 @@ export default function ReferenceLayout({ children }) {
           <ul className="fmt-topbar-links">
             {token ? (
               <>
+                <li><Link to="/profile">Profile</Link> |</li>
                 <li><span className="fmt-member-name">Hi, {memberName}</span> |</li>
                 <li>
                   <button type="button" className="fmt-logout" onClick={handleLogout}>Logout</button>
@@ -53,8 +56,15 @@ export default function ReferenceLayout({ children }) {
                 {logo ? <img src={logo} alt="" /> : <span className="fmt-logo-fallback">D</span>}
               </Link>
               <Link to="/" className="fmt-site-name">
-                <span className="fmt-brand-accent">{name ? name.charAt(0) : 'D'}</span>
-                {name ? name.slice(1) : 'OMIGEN'}
+                {brandParts.length ? brandParts.map((part, index) => (
+                  part.accent
+                    ? <span className="fmt-brand-accent" key={index}>{part.text}</span>
+                    : <span key={index}>{part.text}</span>
+                )) : (
+                  <>
+                    <span className="fmt-brand-accent">D</span>OMIGEN
+                  </>
+                )}
               </Link>
             </div>
             <Link to="/signup" className="fmt-signup-btn">

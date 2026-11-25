@@ -9,7 +9,6 @@ export default function SignIn() {
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
-  const [resetNotice, setResetNotice] = useState(false)
 
   const update = (field) => (event) => {
     const value = field === 'remember' ? event.target.checked : event.target.value
@@ -92,21 +91,10 @@ export default function SignIn() {
             />
             <span>Remember me</span>
           </label>
-          <button
-            type="button"
-            className="text-button"
-            onClick={() => setResetNotice(true)}
-          >
-            Forgot password?
-          </button>
+          <Link to="/forgot-password" className="text-button">Forgot password?</Link>
         </div>
 
         {error && <p className="form-error" role="alert">{error}</p>}
-        {resetNotice && (
-          <p className="form-info" role="status">
-            Password reset isn’t available yet. Please contact support.
-          </p>
-        )}
 
         <button type="submit" className="btn btn-primary btn-block" disabled={submitting}>
           {submitting ? 'Signing in…' : 'Sign in'} <span className="arrow">→</span>

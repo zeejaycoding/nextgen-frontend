@@ -268,7 +268,7 @@
 }
 
 .fmt-clone .fmt-nav-links li.active a {
-  border-top-color: var(--fmt-cyan);
+  border-top-color: transparent;
 }
 
 .fmt-clone .fmt-nav-links a:hover {
@@ -348,6 +348,19 @@
   text-align: center;
 }
 
+.fmt-clone .fmt-home-section {
+  margin-bottom: 30px;
+}
+
+.fmt-clone .fmt-section-title {
+  display: inline-block;
+  margin: 20px 0;
+  color: var(--fmt-navy);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 28px;
+}
+
 .fmt-clone .fmt-empty {
   margin: 20px 0;
   color: var(--fmt-muted, #70858e);
@@ -392,14 +405,13 @@
   position: absolute;
   z-index: 2;
   margin: -10px 0 0 -10px;
-  color: #00b0f0;
+  color: #06a7ea;
   line-height: 0;
 }
 
-.fmt-clone .fmt-rank svg {
-  display: block;
-  width: 32px;
-  height: 32px;
+.fmt-clone .fmt-rank .ref-medal {
+  width: 52px;
+  height: 60px;
 }
 
 .fmt-clone .fmt-card-title {
@@ -426,6 +438,15 @@
 
 .fmt-clone .fmt-infos p {
   margin: 0 0 10px;
+}
+
+.fmt-clone .fmt-price-line strong {
+  color: var(--fmt-cyan);
+}
+
+.fmt-clone .fmt-buy-price {
+  color: var(--fmt-cyan);
+  font-weight: 700;
 }
 
 .fmt-clone .fmt-contact {
@@ -904,6 +925,12 @@
   .fmt-clone .fmt-breadcrumb-section { width: auto; margin: 0 25px 40px 5px; }
   .fmt-clone .fmt-breadcrumb { padding: 8px 0; }
   .fmt-clone .fmt-page-header { font-size: 24px; line-height: 40px; }
+  .fmt-clone .fmt-section-title {
+    margin: 14px 0 12px;
+    padding-bottom: 6px;
+    font-size: 18px;
+    line-height: 22px;
+  }
   .fmt-clone .fmt-main { padding-bottom: 28px; }
   .fmt-clone .fmt-grid {
     display: grid;
@@ -931,7 +958,7 @@
   .fmt-clone .fmt-infos .fmt-more { margin-bottom: 0; text-align: right; }
   .fmt-clone .fmt-btn { margin: 2px 0 0; padding: 4px 8px; font-size: 9px; line-height: 1.2; }
   .fmt-clone .fmt-rank { margin: -5px 0 0 -5px; }
-  .fmt-clone .fmt-rank svg { width: 22px; height: 22px; }
+  .fmt-clone .fmt-rank .ref-medal { width: 38px; height: 44px; }
   .fmt-clone .fmt-footer-top { padding: 14px 0 18px; }
   .fmt-clone .fmt-footer-row { margin-left: -10px; }
   .fmt-clone .fmt-footer-widget {

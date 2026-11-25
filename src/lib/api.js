@@ -26,6 +26,7 @@ export async function apiFetch(path, { token, ...options } = {}) {
   try {
     response = await fetch(apiUrl(path), {
       ...options,
+      cache: options.cache || 'no-store',
       headers: {
         'Content-Type': 'application/json',
         ...authHeaders(token),
@@ -57,7 +58,11 @@ export async function apiFetch(path, { token, ...options } = {}) {
     const error = new Error(message)
     error.status = response.status
     error.code = data?.code || ''
-    if (error.code === 'ACCOUNT_SUSPENDED' || error.code === 'ACCOUNT_DELETED') {
+    if (
+      error.code === 'ACCOUNT_SUSPENDED'
+      || error.code === 'ACCOUNT_DELETED'
+      || error.code === 'ACCOUNT_PASSWORD_CHANGED'
+    ) {
       window.dispatchEvent(new CustomEvent(ACCOUNT_STATUS_EVENT, {
         detail: { code: error.code, message: error.message },
       }))
@@ -123,6 +128,31 @@ export async function signUpMember(details) {
   })
   saveMemberAuth(data)
   return data
+}
+
+export async function changeMemberPassword({ currentPassword, newPassword }) {
+  const { token } = readMemberAuth()
+  const data = await apiFetch('/auth/change-password', {
+    method: 'POST',
+    token,
+    body: JSON.stringify({ currentPassword, newPassword }),
+  })
+  saveMemberAuth(data)
+  return data
+}
+
+export async function requestPasswordReset(email) {
+  return apiFetch('/auth/forgot-password', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  })
+}
+
+export async function resetMemberPassword({ token: resetToken, newPassword }) {
+  return apiFetch('/auth/reset-password', {
+    method: 'POST',
+    body: JSON.stringify({ token: resetToken, newPassword }),
+  })
 }
 
 export async function createFreeOrder(productId) {

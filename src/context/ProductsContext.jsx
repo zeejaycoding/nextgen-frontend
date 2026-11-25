@@ -54,10 +54,15 @@ export function ProductsProvider({ children }) {
     // decide. If nothing has sold yet, still show the catalogue so the section
     // is useful instead of empty.
     const ranked = (flagged.length ? flagged : products).slice().sort(bySales)
+    const byRecent = (a, b) => String(b.publishedAt || b.published || '').localeCompare(
+      String(a.publishedAt || a.published || ''),
+    )
+    const latest = products.slice().sort(byRecent)
 
     return {
       products,
       mostSold: ranked,
+      latest,
       findProduct: (key) => products.find((item) => String(item.slug || item.id) === String(key)),
     }
   }, [products])

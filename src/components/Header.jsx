@@ -33,6 +33,7 @@ export default function Header() {
             {token ? (
               <>
                 <span className="auth-member-name">{memberName}</span>
+                <Link to="/profile" className="auth-profile-link">Profile</Link>
                 <button type="button" className="auth-signin auth-logout" onClick={handleLogout}>
                   Logout
                 </button>

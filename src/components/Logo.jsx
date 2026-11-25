@@ -1,11 +1,12 @@
 import { useSiteSettings } from '../context/SiteSettingsContext'
+import { brandSegments } from '../lib/brand'
 import { DEFAULT_SETTINGS } from '../lib/site-settings'
 
 /** Site logo: admin-controlled artwork with a text fallback. */
 export default function Logo({ size = 46, withText = true, withTagline = true, light = false }) {
   const { name, tagline, logo } = useSiteSettings()
   const isDefault = logo === DEFAULT_SETTINGS.logo
-  const split = Math.ceil(name.length / 2)
+  const segments = brandSegments(name)
   const showWord = withText && Boolean(name)
 
   return (
@@ -38,7 +39,11 @@ export default function Logo({ size = 46, withText = true, withTagline = true, l
       {showWord && (
         <span className={`logo-word logo-word--tagline${light ? ' logo-word--light' : ''}`}>
           <span className="logo-word-main">
-            {name.slice(0, split)}<span className="accent">{name.slice(split)}</span>
+            {segments.map((segment, index) => (
+              segment.accent
+                ? <span className="accent" key={index}>{segment.text}</span>
+                : <span key={index}>{segment.text}</span>
+            ))}
           </span>
           {withTagline && tagline && <span className="logo-word-sub">{tagline}</span>}
         </span>
