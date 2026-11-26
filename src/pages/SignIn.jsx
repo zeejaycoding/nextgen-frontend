@@ -1,10 +1,16 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import AuthShell from '../components/AuthShell'
+import { useMember } from '../context/MemberContext'
 import { signInMember } from '../lib/api'
 
 export default function SignIn() {
   const navigate = useNavigate()
+  const { token } = useMember()
+
+  useEffect(() => {
+    if (token) navigate('/', { replace: true })
+  }, [token, navigate])
   const [form, setForm] = useState({ email: '', password: '', remember: true })
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)

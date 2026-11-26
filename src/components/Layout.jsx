@@ -6,7 +6,11 @@ import ReferenceLayout from './ReferenceLayout'
 
 export default function Layout({ children }) {
   const { pathname } = useLocation()
-  const clonePage = pathname === '/' || pathname === '/shop' || pathname.startsWith('/product/')
+  const clonePage = pathname === '/'
+    || pathname === '/shop'
+    || pathname.startsWith('/product/')
+    || pathname.startsWith('/users/')
+    || pathname.startsWith('/tickets')
 
   return (
     <>

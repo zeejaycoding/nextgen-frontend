@@ -1,11 +1,19 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { DISCORD_INVITE } from '../config'
+import { useMember } from '../context/MemberContext'
 import { useSiteSettings } from '../context/SiteSettingsContext'
 
 export default function ReferenceFooter() {
   const { name, tagline } = useSiteSettings()
+  const { token, signOut } = useMember()
+  const navigate = useNavigate()
   const initial = name ? name.charAt(0) : 'D'
   const rest = name ? name.slice(1) : 'OMIGEN'
+
+  const handleLogout = () => {
+    signOut()
+    navigate('/', { replace: true })
+  }
 
   return (
     <div className="fmt-footer-wrapper">
@@ -39,10 +47,23 @@ export default function ReferenceFooter() {
                 <h2>Useful links</h2>
               </div>
               <div className="fmt-widget-content">
-                <ul className="fmt-footer-nav">
-                  <li><Link to="/signin">Sign In</Link></li>
-                  <li><Link to="/signup">Sign Up</Link></li>
-                </ul>
+                {token ? (
+                  <ul className="fmt-footer-nav">
+                    <li><Link to="/users/account">Account</Link></li>
+                    <li><Link to="/users/software">My Applications</Link></li>
+                    <li><Link to="/tickets">My Tickets</Link></li>
+                    <li>
+                      <button type="button" className="fmt-panel-logout" onClick={handleLogout}>
+                        Log Out
+                      </button>
+                    </li>
+                  </ul>
+                ) : (
+                  <ul className="fmt-footer-nav">
+                    <li><Link to="/signin">Sign In</Link></li>
+                    <li><Link to="/signup">Sign Up</Link></li>
+                  </ul>
+                )}
               </div>
             </div>
           </div>

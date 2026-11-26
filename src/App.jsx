@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Route, Routes, useLocation } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { useAutoUpdate } from './lib/useAutoUpdate'
 import Layout from './components/Layout'
 import Home from './pages/Home'
@@ -7,7 +7,9 @@ import Shop from './pages/Shop'
 import ProductDetail from './pages/ProductDetail'
 import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
-import Profile from './pages/Profile'
+import Account from './pages/Account'
+import MyApplications from './pages/MyApplications'
+import MyTickets from './pages/MyTickets'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 import CheckoutSuccess from './pages/CheckoutSuccess'
@@ -51,7 +53,10 @@ export default function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/users/account" element={<Account />} />
+          <Route path="/users/software" element={<MyApplications />} />
+          <Route path="/tickets" element={<MyTickets />} />
+          <Route path="/profile" element={<Navigate to="/users/account" replace />} />
           <Route path="/checkout/success" element={<CheckoutSuccess />} />
           <Route path="/checkout/cancel" element={<CheckoutCancel />} />
           <Route path="*" element={<NotFound />} />

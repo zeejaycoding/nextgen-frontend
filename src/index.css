@@ -810,6 +810,20 @@ summary:focus-visible {
   color: var(--cyan);
 }
 
+.footer-logout {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #cfe0e6;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.footer-logout:hover {
+  color: var(--cyan);
+}
+
 .footer-bottom {
   padding: 20px 0;
 }
@@ -3172,46 +3186,20 @@ summary:focus-visible {
   position: relative;
 }
 
-.ref-medal {
+/* Reference card badge: fmt-uniF2E6 pinned to the upper-left corner. */
+.fmt-rank {
   position: absolute;
-  top: -16px;
-  left: -14px;
   z-index: 2;
+  margin: -10px 0 0 -10px;
+  color: #00b0f0;
+  line-height: 0;
+}
+
+.fmt-rank .fmt-uniF2E6 {
   display: block;
-  width: 52px;
-  height: 60px;
-  transform: rotate(-6deg);
-  filter: drop-shadow(0 4px 5px rgba(2, 42, 59, 0.3));
-}
-
-.ref-medal svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-.ref-medal-ribbon {
-  fill: #0489cf;
-}
-
-.ref-medal-disc {
-  stroke: #0377b5;
-  stroke-width: 2;
-}
-
-.ref-medal-inner {
-  fill: none;
-  stroke: #bff0ff;
-  stroke-opacity: 0.65;
-  stroke-width: 1.5;
-}
-
-.ref-medal-number {
-  fill: #ffffff;
-  font-family: Arial, sans-serif;
-  font-size: 21px;
-  font-weight: 800;
+  width: 32px;
+  height: 32px;
+  font-size: 32px !important;
 }
 
 .ref-app-title {
@@ -3270,7 +3258,8 @@ summary:focus-visible {
   .ref-product-grid { grid-template-columns: 1fr; }
   .ref-app-picture { min-height: 200px; }
   .ref-app-picture img { height: 180px; }
-  .ref-medal { width: 38px; height: 44px; top: -10px; left: -10px; }
+  .fmt-rank { margin: -6px 0 0 -6px; }
+  .fmt-rank .fmt-uniF2E6 { width: 24px; height: 24px; font-size: 24px !important; }
   .fmt-shots { gap: 8px; }
   .fmt-video iframe { width: 100%; }
 }

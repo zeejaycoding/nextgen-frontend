@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { DISCORD_INVITE } from '../config'
-import Logo from './Logo'
+import { useMember } from '../context/MemberContext'
 import { useSiteSettings } from '../context/SiteSettingsContext'
+import Logo from './Logo'
 
 const socials = [
   {
@@ -13,6 +14,14 @@ const socials = [
 
 export default function Footer() {
   const { name, tagline } = useSiteSettings()
+  const { token, signOut } = useMember()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    signOut()
+    navigate('/', { replace: true })
+  }
+
   return (
     <footer className="site-footer">
       <div className="footer-top">
@@ -35,10 +44,23 @@ export default function Footer() {
 
           <div className="footer-col">
             <h2 className="footer-title">Useful links</h2>
-            <ul className="footer-links">
-              <li><Link to="/signin">Sign In</Link></li>
-              <li><Link to="/signup">Sign Up</Link></li>
-            </ul>
+            {token ? (
+              <ul className="footer-links">
+                <li><Link to="/users/account">Account</Link></li>
+                <li><Link to="/users/software">My Applications</Link></li>
+                <li><Link to="/tickets">My Tickets</Link></li>
+                <li>
+                  <button type="button" className="footer-logout" onClick={handleLogout}>
+                    Log Out
+                  </button>
+                </li>
+              </ul>
+            ) : (
+              <ul className="footer-links">
+                <li><Link to="/signin">Sign In</Link></li>
+                <li><Link to="/signup">Sign Up</Link></li>
+              </ul>
+            )}
           </div>
         </div>
       </div>

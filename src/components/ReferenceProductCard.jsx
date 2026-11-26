@@ -8,11 +8,7 @@ export default function ReferenceProductCard({ product, rank }) {
     <div className="fmt-card">
       <div className="fmt-card-content">
         <div className="fmt-card-details">
-          {rank ? (
-            <span className="fmt-rank" aria-label={`Rank ${rank}`}>
-              <RankMedal rank={rank} />
-            </span>
-          ) : null}
+          {rank ? <RankMedal rank={rank} /> : null}
           <div className="fmt-card-title">{product.title}</div>
           {product.image ? (
             <div className="fmt-picture">

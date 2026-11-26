@@ -22,7 +22,7 @@ export default function Home() {
       </section>
 
       <section className="fmt-home-section">
-        <h2 className="fmt-section-title">Latest Applications</h2>
+        <h2 className="fmt-section-title">Lasted Products</h2>
         {newest.length ? (
           <div className="fmt-grid">
             {newest.map((product) => (

@@ -141,6 +141,36 @@ export async function changeMemberPassword({ currentPassword, newPassword }) {
   return data
 }
 
+export async function updateMemberAccount({ username, email }) {
+  const { token } = readMemberAuth()
+  const data = await apiFetch('/auth/account', {
+    method: 'PUT',
+    token,
+    body: JSON.stringify({ username, email }),
+  })
+  saveMemberAuth({ token: data.token || token, user: data.user })
+  return data
+}
+
+export async function listMemberApplications() {
+  const { token } = readMemberAuth()
+  return apiFetch('/member/applications', { token })
+}
+
+export async function listMemberTickets() {
+  const { token } = readMemberAuth()
+  return apiFetch('/member/tickets', { token })
+}
+
+export async function createMemberTicket({ subject, message }) {
+  const { token } = readMemberAuth()
+  return apiFetch('/member/tickets', {
+    method: 'POST',
+    token,
+    body: JSON.stringify({ subject, message }),
+  })
+}
+
 export async function requestPasswordReset(email) {
   return apiFetch('/auth/forgot-password', {
     method: 'POST',

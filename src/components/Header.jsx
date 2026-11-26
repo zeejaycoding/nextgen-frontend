@@ -32,8 +32,8 @@ export default function Header() {
           <div className="header-auth">
             {token ? (
               <>
-                <span className="auth-member-name">{memberName}</span>
-                <Link to="/profile" className="auth-profile-link">Profile</Link>
+                <span className="auth-member-name">Hello <strong>{memberName}</strong></span>
+                <Link to="/users/account" className="auth-profile-link">Account</Link>
                 <button type="button" className="auth-signin auth-logout" onClick={handleLogout}>
                   Logout
                 </button>
