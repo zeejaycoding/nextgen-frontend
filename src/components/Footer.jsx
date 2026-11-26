@@ -47,7 +47,7 @@ export default function Footer() {
             {token ? (
               <ul className="footer-links">
                 <li><Link to="/users/account">Account</Link></li>
-                <li><Link to="/users/software">My Applications</Link></li>
+                <li><Link to="/users/software">My Products</Link></li>
                 <li><Link to="/tickets">My Tickets</Link></li>
                 <li>
                   <button type="button" className="footer-logout" onClick={handleLogout}>

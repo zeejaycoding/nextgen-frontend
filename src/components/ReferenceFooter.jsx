@@ -50,7 +50,7 @@ export default function ReferenceFooter() {
                 {token ? (
                   <ul className="fmt-footer-nav">
                     <li><Link to="/users/account">Account</Link></li>
-                    <li><Link to="/users/software">My Applications</Link></li>
+                    <li><Link to="/users/software">My Products</Link></li>
                     <li><Link to="/tickets">My Tickets</Link></li>
                     <li>
                       <button type="button" className="fmt-panel-logout" onClick={handleLogout}>

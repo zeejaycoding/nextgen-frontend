@@ -75,7 +75,7 @@ export default function ProductDetail() {
               </div>
             ) : null}
 
-            <h3 className="fmt-section-title">Application Informations</h3>
+            <h3 className="fmt-section-title">Product Information</h3>
             <table className="fmt-table">
               <thead>
                 <tr>
@@ -97,7 +97,7 @@ export default function ProductDetail() {
               </tbody>
             </table>
 
-            <h3 className="fmt-section-title">Description of Application</h3>
+            <h3 className="fmt-section-title">Product Description</h3>
             <div className="fmt-description">
               <p>{product.description}</p>
 
@@ -164,20 +164,20 @@ export default function ProductDetail() {
               )}
             </div>
 
-            <h3 className="fmt-section-title">Buy Application</h3>
+            <h3 className="fmt-section-title">Buy Product</h3>
             <div className="fmt-buy">
               <p className="fmt-buy-price">{priceLabel(product)}</p>
               <button type="button" className="fmt-buy-btn" onClick={openCheckout}>
-                Buy Application <span aria-hidden="true">→</span>
+                Buy Product <span aria-hidden="true">→</span>
               </button>
               {showLoginNotice && (
                 <p className="fmt-buy-login" role="alert">
-                  Please <Link to="/signin">sign in</Link> to buy this application.
+                  Please <Link to="/signin">sign in</Link> to buy this product.
                 </p>
               )}
               <p className="fmt-buy-note">
                 {isFreeProduct(product)
-                  ? 'Free application — no payment details needed.'
+                  ? 'Free product — no payment details needed.'
                   : 'No card details are stored by DOMIGEN.'}
               </p>
             </div>

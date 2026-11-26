@@ -107,7 +107,7 @@ function Checkout({ product, onBack, onDone }) {
 
         {free ? (
           <div className="free-checkout">
-            <p>This application is free. No payment details are needed.</p>
+            <p>This product is free. No payment details are needed.</p>
             {error && <p className="form-error" role="alert">{error}</p>}
             <button
               type="button"
@@ -151,7 +151,7 @@ function Checkout({ product, onBack, onDone }) {
           </>
         )}
 
-        {free && <p className="checkout-note">No payment is taken for free applications.</p>}
+        {free && <p className="checkout-note">No payment is taken for free products.</p>}
       </div>
     </>
   )
@@ -191,9 +191,9 @@ export default function CheckoutModal({ product, onClose }) {
         {step === 'success' && (
           <div className="checkout-success">
             <div className="success-icon" aria-hidden="true">✓</div>
-            <h2 id="checkout-title">Free application added</h2>
+            <h2 id="checkout-title">Free product added</h2>
             <p>{product.title} has been added to your order at no cost.</p>
-            <p className="success-note">No payment was taken because this application is free.</p>
+            <p className="success-note">No payment was taken because this product is free.</p>
             <div className="success-total">
               <span>Total</span> <strong>{priceLabel(product)}</strong>
             </div>

@@ -20,7 +20,7 @@ export default function Shop() {
     <>
       <ReferenceBreadcrumb />
       <div className="fmt-container fmt-page">
-        <h2 className="fmt-page-header">Applications</h2>
+        <h2 className="fmt-page-header">Products</h2>
 
         <div className="fmt-grid">
           {visible.map((product) => (

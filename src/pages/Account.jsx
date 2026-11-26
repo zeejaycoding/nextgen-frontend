@@ -234,7 +234,7 @@ export default function Account() {
               {purchases.map((purchase) => (
                 <div className="fmt-notification-item" key={purchase.id || purchase.stripeSessionId || purchase.product}>
                   <div className="fmt-notification-title">
-                    {purchase.product || 'Application'}
+                    {purchase.product || 'Product'}
                   </div>
                   <div className="fmt-notification-meta">
                     Purchased on {formatDate(purchase.date)}

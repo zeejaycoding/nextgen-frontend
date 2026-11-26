@@ -35,7 +35,7 @@ export default function MyApplications() {
         if (active) setApplications(Array.isArray(data) ? data : [])
       })
       .catch((err) => {
-        if (active) setError(err.message || 'Unable to load your applications right now.')
+        if (active) setError(err.message || 'Unable to load your products right now.')
       })
       .finally(() => {
         if (active) setLoading(false)
@@ -55,22 +55,22 @@ export default function MyApplications() {
             <li className="fmt-divider">/</li>
             <li><Link to="/users/account">My Account</Link></li>
             <li className="fmt-divider">/</li>
-            <li className="fmt-active">My Applications</li>
+            <li className="fmt-active">My Products</li>
           </ul>
         </div>
       </section>
 
       <div className="fmt-container fmt-page">
-        <h2 className="fmt-page-header">My Applications</h2>
+        <h2 className="fmt-page-header">My Products</h2>
 
         {error && <p className="fmt-alert fmt-alert-error">{error}</p>}
         {loading ? (
-          <p className="fmt-empty">Loading your applications…</p>
+          <p className="fmt-empty">Loading your products…</p>
         ) : applications.length ? (
           <table className="fmt-table">
             <thead>
               <tr>
-                <th>Application</th>
+                <th>Product</th>
                 <th>Purchased</th>
                 <th>Amount</th>
                 <th>Status</th>
@@ -79,7 +79,7 @@ export default function MyApplications() {
             <tbody>
               {applications.map((item) => (
                 <tr key={item.id || item.stripeSessionId || item.product}>
-                  <td>{item.product || 'Application'}</td>
+                  <td>{item.product || 'Product'}</td>
                   <td>{displayDate(item.date || item.createdAt)}</td>
                   <td>{Number(item.amount) === 0 ? 'FREE' : `$${Number(item.amount || 0).toFixed(2)}`}</td>
                   <td>{item.status || 'Completed'}</td>
@@ -88,7 +88,7 @@ export default function MyApplications() {
             </tbody>
           </table>
         ) : (
-          <p className="fmt-empty">You have not purchased any applications yet.</p>
+          <p className="fmt-empty">You have not purchased any products yet.</p>
         )}
       </div>
     </>

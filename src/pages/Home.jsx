@@ -17,7 +17,7 @@ export default function Home() {
             ))}
           </div>
         ) : (
-          <p className="fmt-empty">No applications have been added yet.</p>
+          <p className="fmt-empty">No products have been added yet.</p>
         )}
       </section>
 
@@ -30,7 +30,7 @@ export default function Home() {
             ))}
           </div>
         ) : (
-          <p className="fmt-empty">No applications have been added yet.</p>
+          <p className="fmt-empty">No products have been added yet.</p>
         )}
       </section>
     </div>
