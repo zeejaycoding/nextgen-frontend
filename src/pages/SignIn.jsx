@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import AuthShell from '../components/AuthShell'
 import { useMember } from '../context/MemberContext'
-import { signInMember } from '../lib/api'
+import { resendVerificationEmail, signInMember } from '../lib/api'
 
 export default function SignIn() {
   const navigate = useNavigate()
@@ -15,11 +15,16 @@ export default function SignIn() {
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [needsVerification, setNeedsVerification] = useState(false)
+  const [resendMessage, setResendMessage] = useState('')
+  const [resending, setResending] = useState(false)
 
   const update = (field) => (event) => {
     const value = field === 'remember' ? event.target.checked : event.target.value
     setForm((current) => ({ ...current, [field]: value }))
     setError('')
+    setNeedsVerification(false)
+    setResendMessage('')
   }
 
   const handleSubmit = async (event) => {
@@ -41,8 +46,22 @@ export default function SignIn() {
       navigate('/', { replace: true })
     } catch (error) {
       setError(error.status ? error.message : 'Unable to sign in right now. Please try again.')
+      setNeedsVerification(error.code === 'EMAIL_NOT_VERIFIED')
     } finally {
       setSubmitting(false)
+    }
+  }
+
+  const handleResend = async () => {
+    setResending(true)
+    setResendMessage('')
+    try {
+      const data = await resendVerificationEmail(form.email.trim())
+      setResendMessage(data.message || 'A new verification link has been sent.')
+    } catch (error) {
+      setResendMessage(error.status ? error.message : 'Unable to resend the email right now.')
+    } finally {
+      setResending(false)
     }
   }
 
@@ -101,6 +120,12 @@ export default function SignIn() {
         </div>
 
         {error && <p className="form-error" role="alert">{error}</p>}
+        {needsVerification && (
+          <button type="button" className="btn btn-ghost btn-block" onClick={handleResend} disabled={resending}>
+            {resending ? 'Sending…' : 'Resend verification email'}
+          </button>
+        )}
+        {resendMessage && <p className="form-info" role="status">{resendMessage}</p>}
 
         <button type="submit" className="btn btn-primary btn-block" disabled={submitting}>
           {submitting ? 'Signing in…' : 'Sign in'} <span className="arrow">→</span>

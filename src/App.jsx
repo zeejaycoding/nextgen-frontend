@@ -7,6 +7,7 @@ import Shop from './pages/Shop'
 import ProductDetail from './pages/ProductDetail'
 import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
+import VerifyEmail from './pages/VerifyEmail'
 import Account from './pages/Account'
 import MyApplications from './pages/MyApplications'
 import MyTickets from './pages/MyTickets'
@@ -50,6 +51,8 @@ export default function App() {
           <Route path="/product/:slug" element={<ProductDetail />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route path="/verify-email/:token" element={<VerifyEmail />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />

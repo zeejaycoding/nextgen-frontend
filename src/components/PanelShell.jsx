@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 const NAV_ITEMS = [
   { id: 'account', label: 'Account', to: '/users/account' },
   { id: 'password', label: 'Password', to: '/users/account?tab=password' },
+  { id: 'ticket', label: 'Ticket', to: '/users/account?tab=ticket' },
   { id: 'notification', label: 'Notifications', to: '/users/account?tab=notification' },
 ]
 

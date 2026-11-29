@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import AuthShell from '../components/AuthShell'
 import { useMember } from '../context/MemberContext'
-import { signUpMember } from '../lib/api'
+import { resendVerificationEmail, signUpMember } from '../lib/api'
 
 const initialForm = {
   username: '',
@@ -22,6 +22,9 @@ export default function SignUp() {
   const [form, setForm] = useState(initialForm)
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [sentTo, setSentTo] = useState('')
+  const [resending, setResending] = useState(false)
+  const [resendMessage, setResendMessage] = useState('')
 
   const update = (field) => (event) => {
     const value = field === 'terms' ? event.target.checked : event.target.value
@@ -56,17 +59,54 @@ export default function SignUp() {
     setError('')
     setSubmitting(true)
     try {
-      await signUpMember({
+      const data = await signUpMember({
         username: form.username.trim(),
         email: form.email.trim(),
         password: form.password,
       })
-      navigate('/', { replace: true })
+      setSentTo(data.email || form.email.trim())
     } catch (error) {
       setError(error.status ? error.message : 'Unable to create your account right now. Please try again.')
     } finally {
       setSubmitting(false)
     }
+  }
+
+  const handleResend = async () => {
+    setResending(true)
+    setResendMessage('')
+    try {
+      const data = await resendVerificationEmail(sentTo)
+      setResendMessage(data.message || 'A new verification link has been sent.')
+    } catch (error) {
+      setResendMessage(error.status ? error.message : 'Unable to resend the email right now.')
+    } finally {
+      setResending(false)
+    }
+  }
+
+  if (sentTo) {
+    return (
+      <AuthShell
+        title="Check your email"
+        subtitle="One more step before you can sign in."
+        footer={
+          <>
+            Already verified? <Link to="/signin">Sign in</Link>
+          </>
+        }
+      >
+        <div className="auth-result">
+          <p className="form-info" role="status">
+            We sent a verification link to <strong>{sentTo}</strong>. Open it to activate your account, then sign in.
+          </p>
+          <button type="button" className="btn btn-ghost btn-block" onClick={handleResend} disabled={resending}>
+            {resending ? 'Sending…' : 'Resend verification email'}
+          </button>
+          {resendMessage && <p className="form-info" role="status">{resendMessage}</p>}
+        </div>
+      </AuthShell>
+    )
   }
 
   return (

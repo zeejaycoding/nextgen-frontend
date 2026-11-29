@@ -744,6 +744,69 @@
   margin-bottom: 30px;
 }
 
+.fmt-clone .fmt-ticket-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.fmt-clone .fmt-ticket-list-title {
+  margin: 0;
+  color: #022a3b;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.fmt-clone .fmt-ticket-message {
+  margin: 10px 0 0;
+  color: rgba(36, 36, 36, 0.8);
+  font-size: 14px;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.fmt-clone .fmt-ticket-status {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+.fmt-clone .fmt-ticket-status--open {
+  background: #d6efd6;
+  color: #356635;
+}
+
+.fmt-clone .fmt-ticket-status--in-progress {
+  background: #fff3d6;
+  color: #8a5a00;
+}
+
+.fmt-clone .fmt-ticket-status--closed {
+  background: #edf1f3;
+  color: #63757d;
+}
+
+.fmt-clone .fmt-ticket-reply {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-left: 3px solid #06a7ea;
+  background: #fff;
+  font-size: 13px;
+}
+
+.fmt-clone .fmt-ticket-reply strong {
+  color: #022a3b;
+}
+
+.fmt-clone .fmt-ticket-reply p {
+  margin: 5px 0 0;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
 .fmt-clone .fmt-footer-nav .fmt-panel-logout {
   padding: 0;
   border: 0;

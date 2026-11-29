@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import PanelShell from '../components/PanelShell'
+import TicketPanel from '../components/TicketPanel'
 import { useMember } from '../context/MemberContext'
 import { apiFetch, changeMemberPassword, listMemberApplications } from '../lib/api'
 
 const TAB_TITLES = {
   account: 'Account',
   password: 'Password',
+  ticket: 'Tickets',
   notification: 'Notifications',
 }
 
@@ -34,7 +36,7 @@ export default function Account() {
   const { token, user, signOut } = useMember()
   const [searchParams] = useSearchParams()
   const tabParam = searchParams.get('tab')
-  const activeTab = ['account', 'password', 'notification'].includes(tabParam) ? tabParam : 'account'
+  const activeTab = ['account', 'password', 'ticket', 'notification'].includes(tabParam) ? tabParam : 'account'
   const [profile, setProfile] = useState(null)
   const [passwordForm, setPasswordForm] = useState(emptyPassword)
   const [message, setMessage] = useState(null)
@@ -134,6 +136,7 @@ export default function Account() {
   const subtitle = {
     account: 'Your account information.',
     password: 'Change your password or reset your current password.',
+    ticket: 'Open a support ticket and follow admin responses.',
     notification: 'Manage your notifications',
   }[activeTab]
 
@@ -212,6 +215,8 @@ export default function Account() {
           )}
         </form>
       )}
+
+      {activeTab === 'ticket' && <TicketPanel />}
 
       {activeTab === 'notification' && (
         <>

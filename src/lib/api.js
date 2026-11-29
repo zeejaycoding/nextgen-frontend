@@ -126,8 +126,23 @@ export async function signUpMember(details) {
     method: 'POST',
     body: JSON.stringify(details),
   })
-  saveMemberAuth(data)
+  // Signup no longer returns a token: save auth only if a server ever does.
+  if (data.token) saveMemberAuth(data)
   return data
+}
+
+export async function verifyMemberEmail(token) {
+  return apiFetch('/auth/verify-email', {
+    method: 'POST',
+    body: JSON.stringify({ token }),
+  })
+}
+
+export async function resendVerificationEmail(email) {
+  return apiFetch('/auth/resend-verification', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  })
 }
 
 export async function changeMemberPassword({ currentPassword, newPassword }) {
